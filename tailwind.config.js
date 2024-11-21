@@ -2,7 +2,17 @@
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        "primary-color": "#00809d",
+        "secondaryColor": "#072935",
+        "white": "#e9e9e9",
+        "black": "#2a2a2a"
+      },
+      boxShadow: {
+        "bottom": "0 6px 8px rgba(0, 0, 0, 0.25)"
+      }
+    },
   },
   plugins: [],
 };
