@@ -2,13 +2,24 @@ import { useState } from "react";
 
 type ButtonProps = {
   text: string;
+  onClick?: () => void;
+  selectable?: boolean;
 };
 
-export default function Button({ text }: ButtonProps) {
+export default function Button({
+  text,
+  onClick,
+  selectable = true,
+}: ButtonProps) {
   const [selected, setSelected] = useState(false);
 
   function selectHandler() {
-    setSelected((prev) => !prev);
+    if (onClick) {
+      onClick();
+    }
+    if (selectable) {
+      setSelected((prev) => !prev);
+    }
   }
 
   return (
