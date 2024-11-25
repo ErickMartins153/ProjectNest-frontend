@@ -7,9 +7,9 @@ export type LinkButtonProps = {
   className?: string
 };
 
-export default function LinkButton({ text, className }: LinkButtonProps) {
+export default function LinkButton({ text, path, className }: LinkButtonProps) {
   return (
-    <Link to="/login" className="text-white no-underline">
+    <Link to={path} className="text-white no-underline">
       <button className={clsx(
           "bg-secondary-color hover:bg-selected-blue rounded-2xl px-3 py-2",
           className)}>
