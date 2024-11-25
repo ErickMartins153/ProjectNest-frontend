@@ -11,7 +11,7 @@ export default function Logo({className}: LogoProps){
            "aspect-square flex items-center justify-center text-2xl text-white",
            className
          )}>
-      <img src='logo-white.svg' alt="Logo do Project Nest"/>
+      <img src='/logo-white.svg' alt="Logo do Project Nest"/>
     </div>
   );
 }

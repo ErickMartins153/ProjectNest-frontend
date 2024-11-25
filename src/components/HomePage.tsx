@@ -21,8 +21,8 @@ export default function HomePage() {
           id="auth-options"
           className="flex items-center justify-center space-x-3"
         >
-          <LinkButton text="Entrar" path="/login" />
-          <LinkButton text="Cadastrar" path="/register" />
+          <LinkButton text="Entrar" path="/auth/login" />
+          <LinkButton text="Cadastrar" path="/auth/register" />
         </div>
       </nav>
     </div>
