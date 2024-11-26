@@ -8,11 +8,11 @@ type AuthProps = {
 
 export default function Auth({ Child }: AuthProps) {
   return (
-    <div className="bg-black h-screen overflow-auto">
-      <div className="flex flex-col items-center w-full h-full mx-auto">
+    <div id="root-auth" className="flex flex-col bg-black h-screen overflow-auto p-8">
+      <div id="container-auth" className="flex flex-col items-center w-[32%] h-max my-auto mx-auto">
         <Logo className="aspect-square h-36 mt-auto" />
-        <div className="flex-column p-5 rounded-3xl space-y-2 bg-primary-color
-          min-w-[240px] w-[28%] mb-auto">
+        <div className="flex flex-col p-5 rounded-3xl space-y-2 bg-primary-color
+          min-w-[240px] w-full mb-auto">
             <Child />
         </div>
       </div>

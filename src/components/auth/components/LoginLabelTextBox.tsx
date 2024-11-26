@@ -10,7 +10,7 @@ export default function LoginLabelTextBox({ inputName, labelName,
                                             hidable }: LoginLabelTextBoxProps) {
   return (
     <LabelTextBox id={inputName} label={labelName} name={inputName}
-      hidable={hidable} labelClassName="ps-3 text-white text-xl inline-block"
+      hidable={hidable} labelClassName="ps-3 text-white text-2xl inline-block"
       textBoxClassName="mt-2"
     />
   );
