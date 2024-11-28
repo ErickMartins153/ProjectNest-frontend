@@ -1,25 +1,65 @@
 import LinkButton from "../UI/LinkButton.tsx";
 import { Link } from "react-router-dom";
 import LoginLabelTextBox from "./components/LoginLabelTextBox.tsx";
+import { ChangeEvent, useState } from "react";
+import { Credenciais } from "../../store/AuthContext.tsx";
+import useAuth from "../../hooks/useAuth.ts";
 
 export default function Login() {
+  const { logar } = useAuth();
+  const [credenciais, setCredenciais] = useState<Credenciais>({
+    email: "",
+    senha: "",
+  });
+
+  function onChangeHandler<T extends keyof Credenciais>(
+    field: T,
+    value: ChangeEvent<HTMLInputElement>,
+  ) {
+    setCredenciais((prevState) => ({
+      ...prevState,
+      [field]: value.target.value,
+    }));
+  }
+
+  function loginHandler() {
+    if (!credenciais.email || !credenciais.senha) return;
+    logar(credenciais);
+  }
+
   return (
     <>
       <h1 className="text-center">Entrar no ProjectNest</h1>
-      <form className="flex flex-col justify-center items-center space-y-8 ">
-        <LoginLabelTextBox inputName="email" labelName="Email"/>
+      <form className="flex flex-col items-center justify-center space-y-8">
+        <LoginLabelTextBox
+          inputName="email"
+          labelName="Email"
+          onChange={onChangeHandler.bind(null, "email")}
+        />
         <div className="flex flex-col w-full">
-          <LoginLabelTextBox inputName="senha" labelName="Senha" hidable={true}/>
-          <Link to="/redefinir-senha" className="inline-block ms-auto decorated
-              text-black pe-2">
+          <LoginLabelTextBox
+            inputName="senha"
+            labelName="Senha"
+            hidable={true}
+            onChange={onChangeHandler.bind(null, "senha")}
+          />
+          <Link
+            to="/redefinir-senha"
+            className="inline-block text-black decorated ms-auto pe-2"
+          >
             Esqueci minha senha
           </Link>
         </div>
-        <LinkButton text="Entrar" path="#api/login" className="w-36 text-xl" />
+        <LinkButton
+          text="Entrar"
+          onClick={() => loginHandler()}
+          className="text-xl w-36"
+        />
       </form>
 
       <div className="text-center">
-        <p className="text-white">Não tem uma conta? {' '}
+        <p className="text-white">
+          Não tem uma conta?
           <Link to="/auth/register" className="inline decorated text-blackr">
             Cadastrar
           </Link>

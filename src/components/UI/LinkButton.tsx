@@ -4,12 +4,12 @@ import { ButtonHTMLAttributes } from "react";
 
 export type LinkButtonProps = {
   text: string;
-  path: string;
+  path?: string;
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
 export default function LinkButton({
   text,
-  path,
+  path = "",
   className,
   ...props
 }: LinkButtonProps) {

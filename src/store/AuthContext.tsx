@@ -1,19 +1,20 @@
-import { createContext, ReactNode, useState } from "react";
+import { createContext, ReactNode, useEffect, useState } from "react";
 import { Usuario } from "../models/usuarios/Usuario";
 import { PessoaCreation } from "../models/usuarios/PessoaCreation";
 import { EmpresaCreation } from "../models/usuarios/EmpresaCreation";
 import { authService } from "../api/authService";
 import { UsuarioType } from "../models/usuarios/enums/UsuarioType";
+import { Token } from "../models/Token";
 
 export type RegisterData = PessoaCreation | EmpresaCreation;
 
-type Credenciais = {
+export type Credenciais = {
   email: string;
   senha: string;
 };
 
 type AuthContextProps = {
-  usuario: Usuario | null;
+  usuario: AuthResponse | null;
   logar: (credenciais: Credenciais) => Promise<void>;
   registrar: (data: RegisterData) => Promise<void>;
   deslogar: () => Promise<void>;
@@ -30,28 +31,39 @@ export const AuthContext = createContext<AuthContextProps>({
   isLoading: false,
 });
 
+export type AuthResponse = Usuario & Token;
+
 export function AuthContextProvider({ children }: { children: ReactNode }) {
-  const [usuario, setUsuario] = useState<AuthContextProps["usuario"]>(null);
-  const [isLoading, setIsLoading] =
-    useState<AuthContextProps["isLoading"]>(false);
-  const [isError, setIsError] = useState<AuthContextProps["isError"]>(null);
+  const [usuario, setUsuario] = useState<AuthResponse | null>(null);
+  const [isLoading] = useState<AuthContextProps["isLoading"]>(false);
+  const [isError] = useState<AuthContextProps["isError"]>(null);
+
+  useEffect(() => {
+    const usuarioLocal = localStorage.getItem("usuario");
+    if (usuarioLocal) {
+      setUsuario(JSON.parse(usuarioLocal));
+    } else {
+      setUsuario(null);
+    }
+  }, []);
 
   async function logar(credenciais: Credenciais) {
-    console.log(credenciais);
+    const usuarioLogado = await authService.logar(credenciais);
+    setUsuario(usuarioLogado);
+    localStorage.setItem("usuario", JSON.stringify(usuarioLogado));
   }
 
-  async function deslogar() {}
+  async function deslogar() {
+    localStorage.removeItem("usuario");
+    setUsuario(null);
+  }
 
   async function registrar(data: RegisterData) {
-    console.log("chegou");
-
     if (data.type === UsuarioType.PESSOA) {
-      console.log("Registrando pessoa");
       authService.registerPessoa(data as PessoaCreation);
       return;
     }
-
-    console.log("Tipo não é PESSOA, ou outro comportamento aqui");
+    console.log("Tipo não é PESSOA");
     return;
   }
 
