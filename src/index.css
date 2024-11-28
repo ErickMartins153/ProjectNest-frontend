@@ -12,6 +12,18 @@ li {
   list-style: none;
 }
 
+ul.list-disc > li {
+  list-style: disc;
+}
+
+.text-black * {
+  color: unset;
+}
+
+p {
+  @apply indent-8 text-white
+}
+
 a {
   color: black;
   text-decoration: none;
@@ -31,4 +43,8 @@ h1 {
 
 h2 {
   @apply text-white text-3xl;
+}
+
+h3 {
+  @apply text-white text-2xl;
 }

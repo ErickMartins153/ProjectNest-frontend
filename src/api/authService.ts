@@ -1,7 +1,7 @@
 import { PessoaCreation } from "../models/usuarios/PessoaCreation";
 import { Usuario } from "../models/usuarios/Usuario";
 
-const baseUrl = `${import.meta.env.VITE_BASE_URL}/auth`;
+const baseUrl = `${import.meta.env.VITE_BASE_URL}/api/v1/auth`;
 
 async function registerPessoa(pessoaCreation: PessoaCreation) {
   const response = await fetch(`${baseUrl}/usuarios/pessoas`, {
