@@ -27,7 +27,7 @@ export default function Button({
       className={`rounded-md border-2 p-4 text-white ${selected ? "bg-[#0d99ff]" : "bg-[#b3b3b3]"}`}
       onClick={selectHandler}
     >
-      <h2>{text}</h2>
+      <p>{text}</p>
     </button>
   );
 }

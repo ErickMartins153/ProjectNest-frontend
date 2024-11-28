@@ -1,10 +1,10 @@
+import useAuth from "../../hooks/useAuth";
 import Avatar from "./Avatar";
 
-// type UserLabelProps = {
-//   userId: string;
-// };
-
 export default function UserLabel() {
+  const { usuario } = useAuth();
+  console.log(usuario);
+
   return (
     <div className="flex flex-row gap-4 my-4">
       <Avatar
@@ -12,8 +12,7 @@ export default function UserLabel() {
         alt="Ursão"
       />
       <div className="flex flex-col justify-center">
-        <h2>Fulano de Tal</h2>
-        <p>@Fulano</p>
+        <h2>{usuario?.apelido}</h2>
       </div>
     </div>
   );
