@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import LinkButton from "../UI/LinkButton.tsx";
 import LoginLabelTextBox from "./components/LoginLabelTextBox.tsx";
 import { MdCheckBoxOutlineBlank } from "@react-icons/all-files/md/MdCheckBoxOutlineBlank";
@@ -23,9 +23,11 @@ export default function Registrar() {
   const [tipo, setTipo] = useState<TipoUsuario>("PESSOA");
   const [formData, setFormData] = useState<RegisterData>(defaultFormData);
   const { registrar } = useAuth();
+  const navigate = useNavigate();
 
   async function cadastroHandler() {
     await registrar(formData);
+    navigate("/auth/login");
   }
 
   function changeTipo(novoTipo: TipoUsuario) {
