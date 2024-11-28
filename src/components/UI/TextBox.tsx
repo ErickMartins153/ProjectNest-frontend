@@ -4,21 +4,32 @@ import { RiEyeCloseLine as ClosedEye } from "@react-icons/all-files/ri/RiEyeClos
 import { RiEyeLine as OpenEye } from "@react-icons/all-files/ri/RiEyeLine";
 
 export type TextBoxProps = {
-  id: string,
-  name: string,
-  textBoxClassName?: string
-  inputClassName?: string
-  hidable?: boolean
-}
+  id: string;
+  name: string;
+  textBoxClassName?: string;
+  inputClassName?: string;
+  hidable?: boolean;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  required?: boolean;
+};
 
-export default function TextBox({id, name, textBoxClassName,
-                                  inputClassName, hidable}: TextBoxProps) {
+export default function TextBox({
+  id,
+  name,
+  textBoxClassName,
+  inputClassName,
+  hidable,
+  onChange,
+  required = false,
+}: TextBoxProps) {
   const [hidden, setHidden] = useState(true);
 
   const inputPadding: string = (hidable ? "ps-4 " : "px-4 ") + "py-2";
 
   return (
-    <div className={clsx("flex w-[100%] rounded-3xl bg-white", textBoxClassName)}>
+    <div
+      className={clsx("flex w-[100%] rounded-3xl bg-white", textBoxClassName)}
+    >
       <input
         id={id}
         name={name}
@@ -28,12 +39,15 @@ export default function TextBox({id, name, textBoxClassName,
           inputPadding,
           inputClassName,
         )}
+        onChange={onChange}
+        required={required}
       />
-      { hidable && (
-        <div onClick={() => setHidden((prev) => !prev)}
-            className="flex cursor-pointer justify-center items-center
-              w-[10%]">
-          {hidden ? <ClosedEye/> : <OpenEye/>}
+      {hidable && (
+        <div
+          onClick={() => setHidden((prev) => !prev)}
+          className="flex w-[10%] cursor-pointer items-center justify-center"
+        >
+          {hidden ? <ClosedEye /> : <OpenEye />}
         </div>
       )}
     </div>

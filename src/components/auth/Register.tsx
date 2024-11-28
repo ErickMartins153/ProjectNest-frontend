@@ -4,68 +4,173 @@ import LoginLabelTextBox from "./components/LoginLabelTextBox.tsx";
 import { MdCheckBoxOutlineBlank } from "@react-icons/all-files/md/MdCheckBoxOutlineBlank";
 import { MdCheckBox } from "@react-icons/all-files/md/MdCheckBox";
 import { useState } from "react";
+import { UsuarioType } from "../../models/usuarios/enums/UsuarioType.ts";
+import { RegisterData } from "../../store/AuthContext.tsx";
+import useAuth from "../../hooks/useAuth.ts";
 
-type tipoUsuario = "pessoa" | "empresa"
+type TipoUsuario = "PESSOA" | "EMPRESA";
+
+const defaultFormData = {
+  apelido: "",
+  email: "",
+  nome: "",
+  senha: "",
+  sobrenome: "",
+  type: UsuarioType.PESSOA,
+};
 
 export default function Registrar() {
-  const [tipo, setTipo] = useState("pessoa")
+  const [tipo, setTipo] = useState<TipoUsuario>("PESSOA");
+  const [formData, setFormData] = useState<RegisterData>(defaultFormData);
+  const { registrar } = useAuth();
 
-  const changeTipo = (tipo2: tipoUsuario) => () => setTipo(tipo2);
+  async function cadastroHandler() {
+    await registrar(formData);
+  }
 
-  return (<>
-    <h1 className="text-center">Registrar no ProjectNest</h1>
-    <form className="flex flex-col items-center justify-center space-y-8">
-      <LoginLabelTextBox inputName="apelido" labelName="Apelido" />
-      <LoginLabelTextBox inputName="email" labelName="Email" />
-      <LoginLabelTextBox inputName="password" labelName="Senha" />
+  function changeTipo(novoTipo: TipoUsuario) {
+    setTipo(novoTipo);
 
-      <div className="me-auto ps-2 text-xl text-white">
-        <h2 className="mb-2 text-2xl">Tipo de Cadastro</h2>
-        <fieldset className="flex flex-wrap gap-4">
-          <div className="flex space-x-1 items-center cursor-pointer"
-              onClick={changeTipo("pessoa")}>
-            {tipo === "pessoa" ? <MdCheckBox/> : <MdCheckBoxOutlineBlank/>}
-            <label htmlFor="pessoa" className="cursor-pointer">Pessoa</label>
-          </div>
-          <div className="flex space-x-1 items-center cursor-pointer"
-              onClick={changeTipo("empresa")}>
-            {tipo === "empresa" ? <MdCheckBox/> : <MdCheckBoxOutlineBlank/>}
-            <label htmlFor="pessoa" className="cursor-pointer">Empresa</label>
-          </div>
-        </fieldset>
+    setFormData((prevData) => {
+      const newData = {
+        apelido: prevData.apelido,
+        email: prevData.email,
+        senha: prevData.senha,
+        type: UsuarioType[novoTipo],
+      };
+
+      if (novoTipo === "EMPRESA") {
+        return {
+          ...newData,
+          cnpj: "",
+        };
+      } else {
+        return {
+          ...newData,
+          nome: "",
+          sobrenome: "",
+        };
+      }
+    });
+  }
+
+  function updateFormData(e: React.ChangeEvent<HTMLInputElement>) {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  }
+
+  return (
+    <>
+      <h1 className="text-center">Registrar no ProjectNest</h1>
+      <form className="flex flex-col items-center justify-center space-y-8">
+        <LoginLabelTextBox
+          inputName="apelido"
+          labelName="Apelido"
+          onChange={updateFormData}
+        />
+        <LoginLabelTextBox
+          inputName="email"
+          labelName="Email"
+          onChange={updateFormData}
+        />
+        <LoginLabelTextBox
+          inputName="senha"
+          labelName="Senha"
+          hidable
+          onChange={updateFormData}
+        />
+
+        <div className="text-xl text-white me-auto ps-2">
+          <h2 className="mb-2 text-2xl">Tipo de Cadastro</h2>
+          <fieldset className="flex flex-wrap gap-4">
+            <div
+              className="flex items-center space-x-1 cursor-pointer"
+              onClick={() => changeTipo("PESSOA")}
+            >
+              {tipo === "PESSOA" ? <MdCheckBox /> : <MdCheckBoxOutlineBlank />}
+              <label htmlFor="pessoa" className="cursor-pointer">
+                Pessoa
+              </label>
+            </div>
+            <div
+              className="flex items-center space-x-1 cursor-pointer"
+              onClick={() => changeTipo("EMPRESA")}
+            >
+              {tipo === "EMPRESA" ? <MdCheckBox /> : <MdCheckBoxOutlineBlank />}
+              <label htmlFor="pessoa" className="cursor-pointer">
+                Empresa
+              </label>
+            </div>
+          </fieldset>
+        </div>
+
+        {tipo === "PESSOA" && (
+          <PessoaRegisterInputs updateFormData={updateFormData} />
+        )}
+        {tipo === "EMPRESA" && (
+          <EmpresaRegisterInputs updateFormData={updateFormData} />
+        )}
+
+        <LinkButton
+          text="Cadastrar"
+          className="text-xl w-36"
+          onClick={() => cadastroHandler()}
+        />
+      </form>
+
+      <div className="text-center">
+        <p className="text-white">
+          Já possui uma conta?{" "}
+          <Link to="/auth/login" className="inline decorated text-blackr">
+            Entrar
+          </Link>
+        </p>
       </div>
+    </>
+  );
+}
 
-      {tipo === "pessoa" && <PessoaRegisterInputs/>}
-      {tipo === "empresa" && <EmpresaRegisterInputs/>}
-
-      <LinkButton
-        text="Cadastrar"
-        path="#api/login"
-        className="w-36 text-xl"
+function PessoaRegisterInputs({
+  updateFormData,
+}: {
+  updateFormData: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}) {
+  return (
+    <>
+      <LoginLabelTextBox
+        inputName="nome"
+        labelName="Nome"
+        onChange={updateFormData}
       />
-    </form>
-
-    <div className="text-center">
-      <p className="text-white">
-        Já possui uma conta?{" "}
-        <Link to="/auth/login" className="decorated text-blackr inline">
-          Entrar
-        </Link>
-      </p>
-    </div>
-  </>);
+      <LoginLabelTextBox
+        inputName="sobrenome"
+        labelName="Sobrenome"
+        onChange={updateFormData}
+      />
+      <LoginLabelTextBox
+        inputName="pronomes"
+        labelName="Pronomes"
+        onChange={updateFormData}
+      />
+    </>
+  );
 }
 
-function PessoaRegisterInputs() {
-  return (<>
-    <LoginLabelTextBox inputName="nome" labelName="Nome"/>
-    <LoginLabelTextBox inputName="sobrenome" labelName="Sobrenome"/>
-    <LoginLabelTextBox inputName="pronomes" labelName="Pronomes"/>
-  </>);
-}
-
-function EmpresaRegisterInputs() {
-  return (<>
-    <LoginLabelTextBox inputName="cnpj" labelName="CNPJ"/>
-  </>);
+function EmpresaRegisterInputs({
+  updateFormData,
+}: {
+  updateFormData: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}) {
+  return (
+    <>
+      <LoginLabelTextBox
+        inputName="cnpj"
+        labelName="CNPJ"
+        onChange={updateFormData}
+      />
+    </>
+  );
 }
