@@ -17,11 +17,18 @@ a {
   text-decoration: none;
 }
 
-a:hover {
-  border-bottom: 1px solid black;
+a.decorated:hover {
+  @apply underline
+}
+
+a.no-underline {
+  text-decoration: none;
+}
+
+h1 {
+  @apply text-white text-4xl;
 }
 
 h2 {
-  font-size: 1.2em;
-  font-weight: bold;
+  @apply text-white text-3xl;
 }

@@ -1,16 +1,18 @@
-import ProjetoList from "./components/projeto/ProjetoList";
-import Header from "./components/UI/Header";
-import UserLabel from "./components/UI/UserLabel";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Login from "./components/auth/Login.tsx";
+import HomePage from "./components/HomePage.tsx";
+import Auth from "./components/auth/Auth.tsx";
+import Register from "./components/auth/Register.tsx";
 
 function App() {
   return (
-    <>
-      <Header />
-      <div className="flex flex-col border-2 px-6">
-        <UserLabel />
-        <ProjetoList projetos={new Array(12).fill(0)} />
-      </div>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/auth/login" element={<Auth Child={Login} />} />
+        <Route path="/auth/register" element={<Auth Child={Register} />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
