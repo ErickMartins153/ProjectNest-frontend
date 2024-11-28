@@ -1,9 +1,9 @@
-import { Token } from "../models/Token";
+import { Token } from "../models/usuarios/Token";
 import { PessoaCreation } from "../models/usuarios/PessoaCreation";
 import { Usuario } from "../models/usuarios/Usuario";
 import { AuthResponse, Credenciais } from "../store/AuthContext";
 
-const baseUrl = `${import.meta.env.VITE_BASE_URL}/api/v1/auth`;
+const baseUrl = `${import.meta.env.VITE_BASE_URL}/auth`;
 
 async function registerPessoa(pessoaCreation: PessoaCreation) {
   const response = await fetch(`${baseUrl}/usuarios/pessoas`, {
@@ -21,6 +21,8 @@ async function registerPessoa(pessoaCreation: PessoaCreation) {
 }
 
 async function logar(credenciais: Credenciais) {
+  console.log(credenciais);
+
   try {
     const response = await fetch(`${baseUrl}/login`, {
       headers: { "Content-Type": "application/json" },

@@ -4,7 +4,7 @@ import { PessoaCreation } from "../models/usuarios/PessoaCreation";
 import { EmpresaCreation } from "../models/usuarios/EmpresaCreation";
 import { authService } from "../api/authService";
 import { UsuarioType } from "../models/usuarios/enums/UsuarioType";
-import { Token } from "../models/Token";
+import { Token } from "../models/usuarios/Token";
 
 export type RegisterData = PessoaCreation | EmpresaCreation;
 

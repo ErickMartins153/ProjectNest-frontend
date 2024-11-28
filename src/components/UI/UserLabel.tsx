@@ -12,7 +12,7 @@ export default function UserLabel() {
         alt="Ursão"
       />
       <div className="flex flex-col justify-center">
-        <h2>{usuario?.apelido}</h2>
+        <h2 className="capitalize">{usuario?.apelido}</h2>
       </div>
     </div>
   );
