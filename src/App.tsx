@@ -6,6 +6,7 @@ import Register from "./components/auth/Register.tsx";
 import useAuth from "./hooks/useAuth.ts";
 import Dashboard from "./pages/Dashboard.tsx";
 import { useEffect } from "react";
+import About from "./components/About.tsx";
 
 function App() {
   const { usuario } = useAuth();
@@ -23,6 +24,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/auth/login" element={<Auth Child={Login} />} />
           <Route path="/auth/register" element={<Auth Child={Register} />} />
+          <Route path="/about" element={<About/>} />
         </>
       ) : (
         <Route path="/" element={<Dashboard />} />
