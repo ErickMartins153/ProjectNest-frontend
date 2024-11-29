@@ -10,7 +10,7 @@ export default function Navbar() {
       <Logo className="w-24" />
       <PagesDisplay
         pages={[
-          { text: "Início", url: "/home" },
+          { text: "Início", url: "/" },
           { text: "Projetos", url: "/projetos" },
           { text: "Sobre", url: "/about" },
         ]}
