@@ -40,24 +40,22 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const usuarioLocal = localStorage.getItem("usuario");
-    if (usuarioLocal) {
-      setUsuario(JSON.parse(usuarioLocal));
-    } else {
+    try {
+      if (usuarioLocal) {
+        setUsuario(JSON.parse(usuarioLocal));
+      } else {
+        setUsuario(null);
+      }
+    } catch (error) {
+      console.error("Erro ao parsear o usuário do localStorage:", error);
       setUsuario(null);
+      localStorage.removeItem("usuario");
     }
   }, []);
 
   async function logar(credenciais: Credenciais) {
     const usuarioLogado = await authService.logar(credenciais);
-
-    if (usuarioLogado === null) {
-      setError(() => new Error("Credenciais inválidas"));
-      return;
-    }
-
-    console.log(`USUARIO LOGADO: ${JSON.stringify(usuarioLogado)}`);
-    setUsuario(usuarioLogado);
-    setError(null);
+    setUsuario(usuarioLogado || null);
     localStorage.setItem("usuario", JSON.stringify(usuarioLogado));
   }
 

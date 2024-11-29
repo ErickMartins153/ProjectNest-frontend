@@ -41,6 +41,7 @@ export default function TextBox({
         )}
         onChange={onChange}
         required={required}
+        autoComplete="off"
       />
       {hidable && (
         <div

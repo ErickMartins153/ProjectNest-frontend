@@ -21,7 +21,7 @@ ul.list-disc > li {
 }
 
 p {
-  @apply indent-8 text-white
+  @apply indent-8 text-white;
 }
 
 a {
@@ -30,7 +30,7 @@ a {
 }
 
 a.decorated:hover {
-  @apply underline
+  @apply underline;
 }
 
 a.no-underline {
@@ -38,13 +38,19 @@ a.no-underline {
 }
 
 h1 {
-  @apply text-white text-4xl;
+  @apply text-4xl text-white;
 }
 
 h2 {
-  @apply text-white text-3xl;
+  @apply text-3xl text-white;
 }
 
 h3 {
-  @apply text-white text-2xl;
+  @apply text-2xl text-white;
+}
+
+.error > p,
+.preto,
+.preto * {
+  color: black;
 }

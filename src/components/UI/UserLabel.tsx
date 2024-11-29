@@ -3,7 +3,6 @@ import Avatar from "./Avatar";
 
 export default function UserLabel() {
   const { usuario } = useAuth();
-  console.log(usuario);
 
   return (
     <div className="flex flex-row gap-4 my-4">
