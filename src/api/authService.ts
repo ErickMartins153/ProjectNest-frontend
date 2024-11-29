@@ -17,8 +17,8 @@ async function registerPessoa(pessoaCreation: PessoaCreation) {
   return;
 }
 
-const logar = (credenciais: Credenciais): Promise<AuthResponse | void> =>
-  tryCatch(async () => {
+async function logar(credenciais: Credenciais) {
+  return tryCatch(async () => {
     const response = await fetch(`${baseUrl}/login`, {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(credenciais),
@@ -38,5 +38,6 @@ const logar = (credenciais: Credenciais): Promise<AuthResponse | void> =>
     const mergedData: AuthResponse = { ...data.usuarioDTO, ...data.tokenDTO };
     return mergedData;
   });
+}
 
 export const authService = { registerPessoa, logar };

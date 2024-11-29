@@ -56,7 +56,7 @@ export function GlobalErrorProvider({ children }: { children: ReactNode }) {
                 </p>
 
                 <p className="mt-2">
-                  <span className="font-bold">Horário:</span>{" "}
+                  <span className="font-bold">Horário:</span>
                   {dateFormatter(error.timeStamp)}
                 </p>
               </div>
