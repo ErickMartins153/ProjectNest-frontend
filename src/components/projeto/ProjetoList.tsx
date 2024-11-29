@@ -3,9 +3,10 @@ import Button from "../UI/Button";
 import CreateProjectModal from "./CreateProject";
 import ProjetoItem from "./ProjetoItem";
 import { Categorias } from "../../models/projetos/enums/Categorias";
+import { Projeto } from "../../models/projetos/Projeto";
 
 type ProjetoListProps = {
-  projetos: number[];
+  projetos: Projeto[];
   onChangeCategory: (category: keyof typeof Categorias) => void;
   selectedCategory: keyof typeof Categorias | "";
 };
@@ -47,8 +48,8 @@ export default function ProjetoList({
       <div className="rounded-md border-2 border-transparent bg-[#757575] p-3 shadow-lg">
         <h2 className="text-3xl text-white">Projetos</h2>
         <div className="grid grid-cols-4 grid-rows-2 gap-8 overflow-auto">
-          {projetos.map(() => (
-            <ProjetoItem />
+          {projetos.map((projetoData) => (
+            <ProjetoItem key={projetoData.uuid} projeto={projetoData} />
           ))}
         </div>
       </div>
