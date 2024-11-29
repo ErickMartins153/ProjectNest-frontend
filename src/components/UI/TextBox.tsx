@@ -8,8 +8,10 @@ export type TextBoxProps = {
   name: string;
   textBoxClassName?: string;
   inputClassName?: string;
+  placeHolder?: string;
+  value?: string
   hidable?: boolean;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   required?: boolean;
 };
 
@@ -21,6 +23,8 @@ export default function TextBox({
   hidable,
   onChange,
   required = false,
+  placeHolder,
+  value
 }: TextBoxProps) {
   const [hidden, setHidden] = useState(true);
 
@@ -41,6 +45,8 @@ export default function TextBox({
         )}
         onChange={onChange}
         required={required}
+        placeholder={placeHolder}
+        value={value}
         autoComplete="off"
       />
       {hidable && (

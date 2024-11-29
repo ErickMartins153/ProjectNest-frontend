@@ -1,7 +1,7 @@
 type AvatarProps = {
   url: string;
   alt: string;
-  size?: number;
+  size?: string | number;
 };
 
 export default function Avatar({ url, alt, size = 80 }: AvatarProps) {
@@ -9,8 +9,8 @@ export default function Avatar({ url, alt, size = 80 }: AvatarProps) {
     <img
       src={url}
       alt={alt}
-      className="object-cover border-2 border-black rounded-full"
-      style={{ width: size, height: size }}
+      className="aspect-square object-cover border-2 border-black rounded-full"
+      style={{ height: size }}
     />
   );
 }
