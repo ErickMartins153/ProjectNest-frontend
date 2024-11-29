@@ -1,21 +1,15 @@
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Login from "./components/auth/Login.tsx";
-import HomePage from "./components/HomePage.tsx";
+import HomePage from "./pages/HomePage.tsx";
 import Auth from "./components/auth/Auth.tsx";
 import Register from "./components/auth/Register.tsx";
 import useAuth from "./hooks/useAuth.ts";
 import Dashboard from "./pages/Dashboard.tsx";
-import { useEffect } from "react";
 import About from "./components/About.tsx";
+import Profile from "./pages/profile/Profile.tsx";
 
 function App() {
   const { usuario } = useAuth();
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (usuario) {
-      navigate("/");
-    }
-  }, [usuario, navigate]);
 
   return (
     <Routes>
@@ -27,7 +21,11 @@ function App() {
           <Route path="/about" element={<About/>} />
         </>
       ) : (
+        <>
+        <Route path="/auth/login" element={<Auth Child={Login} />} />
         <Route path="/" element={<Dashboard />} />
+        <Route path="/profile/:uuid" element={<Profile/>} />
+        </>
       )}
     </Routes>
   );

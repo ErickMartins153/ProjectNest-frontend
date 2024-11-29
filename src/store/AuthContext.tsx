@@ -36,7 +36,7 @@ export type AuthResponse = Usuario & Token;
 export function AuthContextProvider({ children }: { children: ReactNode }) {
   const [usuario, setUsuario] = useState<AuthResponse | null>(null);
   const [isLoading] = useState<AuthContextProps["isLoading"]>(false);
-  const [isError] = useState<AuthContextProps["isError"]>(null);
+  const [isError, setError] = useState<AuthContextProps["isError"]>(null);
 
   useEffect(() => {
     const usuarioLocal = localStorage.getItem("usuario");
@@ -49,7 +49,15 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
 
   async function logar(credenciais: Credenciais) {
     const usuarioLogado = await authService.logar(credenciais);
+
+    if (usuarioLogado === null) {
+      setError(() => new Error("Credenciais inválidas"));
+      return;
+    }
+
+    console.log(`USUARIO LOGADO: ${JSON.stringify(usuarioLogado)}`);
     setUsuario(usuarioLogado);
+    setError(null);
     localStorage.setItem("usuario", JSON.stringify(usuarioLogado));
   }
 

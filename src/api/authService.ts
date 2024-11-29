@@ -20,7 +20,7 @@ async function registerPessoa(pessoaCreation: PessoaCreation) {
   return;
 }
 
-async function logar(credenciais: Credenciais) {
+async function logar(credenciais: Credenciais): Promise<AuthResponse | null> {
   console.log(credenciais);
 
   try {
@@ -30,14 +30,14 @@ async function logar(credenciais: Credenciais) {
       method: "POST",
     });
 
+    if (!response.ok) return null;
+
     const data = (await response.json()) as {
       usuarioDTO: Usuario;
       tokenDTO: Token;
     };
 
-    const mergedData: AuthResponse = { ...data.usuarioDTO, ...data.tokenDTO };
-
-    return mergedData;
+    return { ...data.usuarioDTO, ...data.tokenDTO };
   } catch (error) {
     console.log(error);
     return null;

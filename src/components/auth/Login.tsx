@@ -1,16 +1,23 @@
 import LinkButton from "../UI/LinkButton.tsx";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import LoginLabelTextBox from "./components/LoginLabelTextBox.tsx";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { Credenciais } from "../../store/AuthContext.tsx";
 import useAuth from "../../hooks/useAuth.ts";
 
 export default function Login() {
-  const { logar } = useAuth();
+  const navigate = useNavigate();
+  const { usuario, logar, isError } = useAuth();
   const [credenciais, setCredenciais] = useState<Credenciais>({
     email: "",
     senha: "",
   });
+
+  useEffect(() => {
+    if (usuario) {
+      navigate("/");
+    }
+  }, [usuario, navigate]);
 
   function onChangeHandler<T extends keyof Credenciais>(
     field: T,
@@ -50,6 +57,13 @@ export default function Login() {
             Esqueci minha senha
           </Link>
         </div>
+
+        {isError && (
+          <div className="bg-white p-2 rounded-3xl border-4 border-red-500">
+            {isError.message + "!"}
+          </div>
+        )}
+
         <LinkButton
           text="Entrar"
           onClick={() => loginHandler()}
