@@ -7,9 +7,22 @@ import useAuth from "./hooks/useAuth.ts";
 import Dashboard from "./pages/Dashboard.tsx";
 import About from "./pages/About.tsx";
 import Profile from "./pages/profile/Profile.tsx";
+import UpdateProfile from "./pages/profile/UpdateProfile.tsx";
+import { useEffect } from "react";
 
 function App() {
-  const { usuario } = useAuth();
+  const { usuario, refresh } = useAuth();
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (usuario !== null) refresh(usuario.token);
+      console.log("REFRESHING")
+    }, 300000)
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [usuario, refresh]);
 
   return (
     <Routes>
@@ -23,6 +36,7 @@ function App() {
       ) : (
         <>
         <Route path="/auth/login" element={<Auth Child={Login} />} />
+          <Route path="/update-profile" element={<UpdateProfile />} />
         <Route path="/" element={<Dashboard />} />
         <Route path="/profile/:uuid" element={<Profile/>} />
         </>
