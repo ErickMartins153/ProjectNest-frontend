@@ -18,7 +18,6 @@ type AuthContextProps = {
   logar: (credenciais: Credenciais) => Promise<void>;
   registrar: (data: RegisterData) => Promise<void>;
   deslogar: () => Promise<void>;
-  isError: Error | null;
   isLoading: boolean;
 };
 
@@ -27,7 +26,6 @@ export const AuthContext = createContext<AuthContextProps>({
   logar: async () => {},
   registrar: async () => {},
   usuario: null,
-  isError: null,
   isLoading: false,
 });
 
@@ -35,11 +33,12 @@ export type AuthResponse = Usuario & Token;
 
 export function AuthContextProvider({ children }: { children: ReactNode }) {
   const [usuario, setUsuario] = useState<AuthResponse | null>(null);
-  const [isLoading] = useState<AuthContextProps["isLoading"]>(false);
-  const [isError, setError] = useState<AuthContextProps["isError"]>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const usuarioLocal = localStorage.getItem("usuario");
 
   useEffect(() => {
-    const usuarioLocal = localStorage.getItem("usuario");
+    setIsLoading(true);
     try {
       if (usuarioLocal) {
         setUsuario(JSON.parse(usuarioLocal));
@@ -50,8 +49,10 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
       console.error("Erro ao parsear o usuário do localStorage:", error);
       setUsuario(null);
       localStorage.removeItem("usuario");
+    } finally {
+      setIsLoading(false);
     }
-  }, []);
+  }, [usuarioLocal]);
 
   async function logar(credenciais: Credenciais) {
     const usuarioLogado = await authService.logar(credenciais);
@@ -68,8 +69,10 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
     if (data.type === UsuarioType.PESSOA) {
       authService.registerPessoa(data as PessoaCreation);
       return;
+    } else if (data.type === UsuarioType.EMPRESA) {
+      authService.registerEmpresa(data as EmpresaCreation);
+      return;
     }
-    console.log("Tipo não é PESSOA");
     return;
   }
 
@@ -77,9 +80,8 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
     usuario,
     logar,
     deslogar,
-    isError,
-    isLoading,
     registrar,
+    isLoading,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
