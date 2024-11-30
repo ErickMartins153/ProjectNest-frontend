@@ -12,7 +12,7 @@ export default function Dashboard() {
     keyof typeof Categorias | ""
   >("");
 
-  const { projetos } = useProjetos(selectedCategory, usuario!.token);
+  const { projetos } = useProjetos({ selectedCategory, token: usuario!.token });
 
   function selectCategoryHandler(category: typeof selectedCategory) {
     if (selectedCategory === category) {

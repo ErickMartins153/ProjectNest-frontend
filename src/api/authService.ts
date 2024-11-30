@@ -4,6 +4,7 @@ import { Usuario } from "../models/usuarios/Usuario";
 import { AuthResponse, Credenciais } from "../store/AuthContext";
 import { ExceptionBody } from "../models/error/ExceptionBody";
 import { tryCatch } from "../utils/tryCatch";
+import { EmpresaCreation } from "../models/usuarios/EmpresaCreation";
 
 const baseUrl = `${import.meta.env.VITE_BASE_URL}/auth`;
 
@@ -11,6 +12,16 @@ async function registerPessoa(pessoaCreation: PessoaCreation) {
   await fetch(`${baseUrl}/usuarios/pessoas`, {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(pessoaCreation),
+    method: "POST",
+  });
+
+  return;
+}
+
+async function registerEmpresa(empresaCreation: EmpresaCreation) {
+  await fetch(`${baseUrl}/usuarios/pessoas`, {
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(empresaCreation),
     method: "POST",
   });
 
@@ -41,11 +52,12 @@ async function logar(credenciais: Credenciais) {
 }
 
 async function refresh(token: string): Promise<AuthResponse | null> {
-  const response = await tryCatch(async () =>
-    await fetch(`${baseUrl}/validate`, {
-      headers: { Authorization: `Bearer ${token}` },
-      method: "POST"
-    })
+  const response = await tryCatch(
+    async () =>
+      await fetch(`${baseUrl}/validate`, {
+        headers: { Authorization: `Bearer ${token}` },
+        method: "POST",
+      }),
   );
 
   if (response === undefined || !response.ok) {
@@ -53,11 +65,11 @@ async function refresh(token: string): Promise<AuthResponse | null> {
   }
 
   const data = (await response.json()) as {
-    usuarioDTO: Usuario,
-    tokenDTO: Token
+    usuarioDTO: Usuario;
+    tokenDTO: Token;
   };
 
   return { ...data.usuarioDTO, ...data.tokenDTO };
 }
 
-export const authService = { registerPessoa, logar, refresh };
+export const authService = { registerPessoa, logar, registerEmpresa, refresh };

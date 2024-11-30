@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Login from "./components/auth/Login.tsx";
 import HomePage from "./pages/HomePage.tsx";
 import Auth from "./components/auth/Auth.tsx";
@@ -11,36 +11,38 @@ import UpdateProfile from "./pages/profile/UpdateProfile.tsx";
 import { useEffect } from "react";
 
 function App() {
-  const { usuario, refresh } = useAuth();
+  const { usuario, refresh, isLoading } = useAuth();
 
   useEffect(() => {
     const interval = setInterval(() => {
       if (usuario !== null) refresh(usuario.token);
-      console.log("REFRESHING")
-    }, 300000)
+      console.log("REFRESHING");
+    }, 300000);
 
     return () => {
       clearInterval(interval);
     };
   }, [usuario, refresh]);
 
+  if (isLoading) return null;
+
   return (
     <Routes>
+      <Route path="/about" element={<About />} />
       {!usuario ? (
         <>
           <Route path="/" element={<HomePage />} />
           <Route path="/auth/login" element={<Auth Child={Login} />} />
           <Route path="/auth/register" element={<Auth Child={Register} />} />
-          <Route path="/about" element={<About/>} />
         </>
       ) : (
         <>
-        <Route path="/auth/login" element={<Auth Child={Login} />} />
           <Route path="/update-profile" element={<UpdateProfile />} />
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/profile/:uuid" element={<Profile/>} />
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/projetos/:uuid" element={<ProjetoDetalhes />} />
         </>
       )}
+      <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   );
 }

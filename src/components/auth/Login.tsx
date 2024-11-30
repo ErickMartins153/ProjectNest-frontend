@@ -7,7 +7,7 @@ import useAuth from "../../hooks/useAuth.ts";
 
 export default function Login() {
   const navigate = useNavigate();
-  const { usuario, logar, isError } = useAuth();
+  const { usuario, logar } = useAuth();
   const [credenciais, setCredenciais] = useState<Credenciais>({
     email: "",
     senha: "",
@@ -57,13 +57,6 @@ export default function Login() {
             Esqueci minha senha
           </Link>
         </div>
-
-        {isError && (
-          <div className="bg-white p-2 rounded-3xl border-4 border-red-500">
-            {isError.message + "!"}
-          </div>
-        )}
-
         <LinkButton
           text="Entrar"
           onClick={() => loginHandler()}

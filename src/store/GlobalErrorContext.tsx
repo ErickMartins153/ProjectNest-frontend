@@ -29,6 +29,13 @@ export function GlobalErrorProvider({ children }: { children: ReactNode }) {
     initializeGlobalSetError(setError);
   }, []);
 
+  function fecharHandler() {
+    if (error?.message.includes("expirou") && error.httpStatus) {
+      localStorage.removeItem("usuario");
+    }
+    setError(null);
+  }
+
   return (
     <GlobalErrorContext.Provider value={{ error, setError }}>
       {children}
@@ -36,11 +43,6 @@ export function GlobalErrorProvider({ children }: { children: ReactNode }) {
         error &&
         createPortal(
           <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur">
-            <div
-              className="absolute inset-0 bg-black/50"
-              onClick={() => setError(null)}
-            ></div>
-
             <div
               className={`relative z-10 w-96 rounded-lg bg-white p-6 shadow-lg transition-transform duration-300 ${
                 isVisible ? "translate-y-0" : "translate-y-full"
@@ -63,7 +65,7 @@ export function GlobalErrorProvider({ children }: { children: ReactNode }) {
 
               <button
                 className="w-full px-4 py-2 mt-6 text-white bg-red-600 rounded hover:bg-red-700"
-                onClick={() => setError(null)}
+                onClick={fecharHandler}
               >
                 Fechar
               </button>

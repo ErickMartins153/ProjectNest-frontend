@@ -10,7 +10,7 @@ async function criarProjeto(
   tokenUsuario: string,
 ) {
   return tryCatch(async () => {
-    const response = await fetch(`${baseUrl}`, {
+    const response = await fetch(baseUrl, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${tokenUsuario}`,
@@ -29,6 +29,7 @@ async function criarProjeto(
 }
 
 async function getAllProjetos(tokenUsuario: string) {
+  if (!tokenUsuario) return;
   return tryCatch(async () => {
     const response = await fetch(`${baseUrl}`, {
       headers: {
@@ -48,4 +49,28 @@ async function getAllProjetos(tokenUsuario: string) {
   });
 }
 
-export const projetoService = { criarProjeto, getAllProjetos };
+async function getProjetoByUuid(idProjeto: string, tokenUsuario: string) {
+  return tryCatch(async () => {
+    const response = await fetch(`${baseUrl}/${idProjeto}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${tokenUsuario}`,
+      },
+      method: "GET",
+    });
+
+    if (!response.ok) {
+      const error = (await response.json()) as ExceptionBody;
+      throw error;
+    }
+
+    const projeto = (await response.json()) as Projeto;
+    return projeto;
+  });
+}
+
+export const projetoService = {
+  criarProjeto,
+  getAllProjetos,
+  getProjetoByUuid,
+};

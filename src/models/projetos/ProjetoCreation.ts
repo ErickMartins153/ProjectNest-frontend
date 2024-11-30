@@ -1,3 +1,3 @@
 import { Projeto } from "./Projeto";
 
-export type ProjetoCreation = Omit<Projeto, "uuid">;
+export type ProjetoCreation = Omit<Projeto, "uuid" | "status">;

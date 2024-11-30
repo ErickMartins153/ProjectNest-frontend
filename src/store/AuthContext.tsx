@@ -5,7 +5,7 @@ import { EmpresaCreation } from "../models/usuarios/EmpresaCreation";
 import { authService } from "../api/authService";
 import { UsuarioType } from "../models/usuarios/enums/UsuarioType";
 import { Token } from "../models/usuarios/Token";
-import _ from "lodash"
+import _ from "lodash";
 
 export type RegisterData = PessoaCreation | EmpresaCreation;
 
@@ -18,9 +18,8 @@ type AuthContextProps = {
   usuario: AuthResponse | null;
   logar: (credenciais: Credenciais) => Promise<void>;
   registrar: (data: RegisterData) => Promise<void>;
-  refresh: (token: string) => void
+  refresh: (token: string) => void;
   deslogar: () => Promise<void>;
-  isError: Error | null;
   isLoading: boolean;
 };
 
@@ -30,7 +29,6 @@ export const AuthContext = createContext<AuthContextProps>({
   registrar: async () => {},
   refresh: async () => {},
   usuario: null,
-  isError: null,
   isLoading: false,
 });
 
@@ -38,11 +36,12 @@ export type AuthResponse = Usuario & Token;
 
 export function AuthContextProvider({ children }: { children: ReactNode }) {
   const [usuario, setUsuario] = useState<AuthResponse | null>(null);
-  const [isLoading] = useState<AuthContextProps["isLoading"]>(false);
-  const [isError, setError] = useState<AuthContextProps["isError"]>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const usuarioLocal = localStorage.getItem("usuario");
 
   useEffect(() => {
-    const usuarioLocal = localStorage.getItem("usuario");
+    setIsLoading(true);
     try {
       if (usuarioLocal) {
         setUsuario(JSON.parse(usuarioLocal));
@@ -53,12 +52,14 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
       console.error("Erro ao parsear o usuário do localStorage:", error);
       setUsuario(null);
       localStorage.removeItem("usuario");
+    } finally {
+      setIsLoading(false);
     }
-  }, []);
+  }, [usuarioLocal]);
 
   async function refresh() {
     if (usuario === null) return;
-    const authResponse = await authService.refresh(usuario.token)
+    const authResponse = await authService.refresh(usuario.token);
 
     if (authResponse === null) {
       await deslogar();
@@ -66,7 +67,7 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
     }
 
     if (!_.isEqual(usuario, authResponse)) {
-      localStorage.setItem("usuario", JSON.stringify(authResponse))
+      localStorage.setItem("usuario", JSON.stringify(authResponse));
       setUsuario(authResponse);
     }
   }
@@ -86,8 +87,10 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
     if (data.type === UsuarioType.PESSOA) {
       authService.registerPessoa(data as PessoaCreation);
       return;
+    } else if (data.type === UsuarioType.EMPRESA) {
+      authService.registerEmpresa(data as EmpresaCreation);
+      return;
     }
-    console.log("Tipo não é PESSOA");
     return;
   }
 
@@ -95,10 +98,9 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
     usuario,
     logar,
     deslogar,
-    isError,
-    isLoading,
     registrar,
-    refresh
+    isLoading,
+    refresh,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

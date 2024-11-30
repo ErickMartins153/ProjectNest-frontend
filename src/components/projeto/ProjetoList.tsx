@@ -4,6 +4,8 @@ import CreateProjectModal from "./CreateProject";
 import ProjetoItem from "./ProjetoItem";
 import { Categorias } from "../../models/projetos/enums/Categorias";
 import { Projeto } from "../../models/projetos/Projeto";
+import { useProjetos } from "../../hooks/useProjetos";
+import useAuth from "../../hooks/useAuth";
 
 type ProjetoListProps = {
   projetos: Projeto[];
@@ -17,8 +19,11 @@ export default function ProjetoList({
   selectedCategory,
 }: ProjetoListProps) {
   const [showModal, setShowModal] = useState(false);
+  const { usuario } = useAuth();
+  const { refetchProjetos } = useProjetos({ token: usuario!.token });
 
   function modalHandler() {
+    refetchProjetos();
     setShowModal((prev) => !prev);
   }
 
