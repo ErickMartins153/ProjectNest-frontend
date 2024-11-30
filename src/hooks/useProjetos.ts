@@ -1,41 +1,54 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Projeto } from "../models/projetos/Projeto";
 import { Categorias } from "../models/projetos/enums/Categorias";
 import { projetoService } from "../api/projetoService";
+import { ProjetoCreation } from "../models/projetos/ProjetoCreation";
 
-interface UseProjetosReturn {
-  projetos: Projeto[];
-  loading: boolean;
-  error: string | null;
+interface UseProjetosParams {
+  selectedCategory?: keyof typeof Categorias | "";
+  token: string;
+  uuid?: string;
 }
 
-export function useProjetos(
-  selectedCategory: keyof typeof Categorias | "",
-  token: string,
-): UseProjetosReturn {
+export function useProjetos({
+  selectedCategory = "",
+  token,
+  uuid,
+}: UseProjetosParams) {
   const [projetos, setProjetos] = useState<Projeto[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  const [projeto, setProjeto] = useState<Projeto | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const fetchProjetos = useCallback(async () => {
+    try {
+      if (uuid) {
+        const projeto = await projetoService.getProjetoByUuid(uuid, token);
+        setProjeto(projeto || null);
+      } else {
+        const projetos = (await projetoService.getAllProjetos(token)) || [];
+        setProjetos(projetos);
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [token, uuid]);
 
   useEffect(() => {
-    const fetchProjetos = async () => {
-      setLoading(true);
-      setError(null);
-
-      try {
-        const projetos = (await projetoService.getAllProjetos(token)) || [];
-
-        setProjetos(projetos);
-      } catch (err) {
-        setError("Erro ao carregar os projetos.");
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
+    if (!token) return;
     fetchProjetos();
-  }, [selectedCategory, token]);
+  }, [selectedCategory, token, uuid, fetchProjetos]);
 
-  return { projetos, loading, error };
+  async function criarProjeto(projeto: ProjetoCreation) {
+    projetoService.criarProjeto(projeto, token);
+  }
+
+  return {
+    projetos,
+    projeto,
+    isLoading,
+    criarProjeto,
+    refetchProjetos: fetchProjetos,
+  };
 }
