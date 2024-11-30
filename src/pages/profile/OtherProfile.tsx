@@ -30,8 +30,8 @@ export default function OtherProfile({ uuid }: ProfileProps) {
     fetchUsuario();
   }, [usuario, uuid]);
 
-  if (usuario === null) {
-    return <h1>Usuário não encontrado =(</h1>
+  if (other === null) {
+    return (<><h1>Usuário não encontrado =(</h1></>);
   }
 
   return (<>
