@@ -1,10 +1,9 @@
-import { ProfileProps } from "./Profile.tsx";
 import ProfileInfo from "./components/ProfileInfo.tsx";
 import { BsGearFill } from "@react-icons/all-files/bs/BsGearFill";
 import { useNavigate } from "react-router-dom";
 
 
-export default function OwnProfile({ uuid }: ProfileProps) {
+export default function OwnProfile() {
   const navigate = useNavigate();
 
   const goTo = (path: string) => () => navigate(path);
