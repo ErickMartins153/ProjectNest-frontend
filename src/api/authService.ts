@@ -51,4 +51,25 @@ async function logar(credenciais: Credenciais) {
   });
 }
 
-export const authService = { registerPessoa, logar, registerEmpresa };
+async function refresh(token: string): Promise<AuthResponse | null> {
+  const response = await tryCatch(
+    async () =>
+      await fetch(`${baseUrl}/validate`, {
+        headers: { Authorization: `Bearer ${token}` },
+        method: "POST",
+      }),
+  );
+
+  if (response === undefined || !response.ok) {
+    return null;
+  }
+
+  const data = (await response.json()) as {
+    usuarioDTO: Usuario;
+    tokenDTO: Token;
+  };
+
+  return { ...data.usuarioDTO, ...data.tokenDTO };
+}
+
+export const authService = { registerPessoa, logar, registerEmpresa, refresh };

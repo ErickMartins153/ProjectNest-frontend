@@ -5,6 +5,7 @@ import { EmpresaCreation } from "../models/usuarios/EmpresaCreation";
 import { authService } from "../api/authService";
 import { UsuarioType } from "../models/usuarios/enums/UsuarioType";
 import { Token } from "../models/usuarios/Token";
+import _ from "lodash";
 
 export type RegisterData = PessoaCreation | EmpresaCreation;
 
@@ -17,6 +18,7 @@ type AuthContextProps = {
   usuario: AuthResponse | null;
   logar: (credenciais: Credenciais) => Promise<void>;
   registrar: (data: RegisterData) => Promise<void>;
+  refresh: (token: string) => void;
   deslogar: () => Promise<void>;
   isLoading: boolean;
 };
@@ -25,6 +27,7 @@ export const AuthContext = createContext<AuthContextProps>({
   deslogar: async () => {},
   logar: async () => {},
   registrar: async () => {},
+  refresh: async () => {},
   usuario: null,
   isLoading: false,
 });
@@ -54,6 +57,21 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
     }
   }, [usuarioLocal]);
 
+  async function refresh() {
+    if (usuario === null) return;
+    const authResponse = await authService.refresh(usuario.token);
+
+    if (authResponse === null) {
+      await deslogar();
+      return;
+    }
+
+    if (!_.isEqual(usuario, authResponse)) {
+      localStorage.setItem("usuario", JSON.stringify(authResponse));
+      setUsuario(authResponse);
+    }
+  }
+
   async function logar(credenciais: Credenciais) {
     const usuarioLogado = await authService.logar(credenciais);
     setUsuario(usuarioLogado || null);
@@ -61,7 +79,7 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
   }
 
   async function deslogar() {
-    localStorage.removeItem("usuario");
+    await localStorage.removeItem("usuario");
     setUsuario(null);
   }
 
@@ -82,6 +100,7 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
     deslogar,
     registrar,
     isLoading,
+    refresh,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
