@@ -14,7 +14,7 @@ import {
   PessoaUpdate,
   UsuarioUpdate
 } from "../../models/usuarios/UsuarioUpdate.ts";
-import { updateUsuario } from "../../api/usuarioService.ts";
+import { usuarioService } from "../../api/usuarioService.ts";
 
 
 type OnFieldChange = (
@@ -37,7 +37,7 @@ export default function UpdateProfile() {
   };
 
   function sendUpdate() {
-    updateUsuario(usuarioUpdate, usuario!.token)
+    usuarioService.updateUsuario(usuarioUpdate, usuario!.token)
     refresh(usuario!.token)
   }
 

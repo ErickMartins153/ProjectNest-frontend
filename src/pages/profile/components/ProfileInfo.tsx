@@ -1,9 +1,11 @@
 import Avatar from "../../../components/UI/Avatar.tsx";
-import useAuth from "../../../hooks/useAuth.ts";
+import { Usuario } from "../../../models/usuarios/Usuario.ts";
 
-export default function ProfileInfo() {
-  const { usuario } = useAuth();
+type ProfileInfoProps = {
+  usuario: Usuario
+}
 
+export default function ProfileInfo({ usuario }: ProfileInfoProps) {
   return (
     <>
       <div className="aspect-square h-[12rem] sm:h-[16rem] md:h-[20rem]">
