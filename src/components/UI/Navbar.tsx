@@ -2,9 +2,17 @@ import Logo from "./Logo.tsx";
 import SearchBar from "./SearchBar.tsx";
 import LinkButton from "./LinkButton.tsx";
 import useAuth from "../../hooks/useAuth.ts";
+import { useNavigate } from "react-router-dom";
 
 export default function Navbar() {
   const { deslogar, usuario } = useAuth();
+  const navigator = useNavigate();
+
+  async function onDeslogar() {
+    await deslogar();
+    navigator("/")
+  }
+
   return (
     <nav className="flex flex-wrap h-24 px-4 bg-primary-color shadow-bottom">
       <Logo className="w-24" />
@@ -28,7 +36,7 @@ export default function Navbar() {
             <LinkButton text="Cadastrar" path="/auth/register" />
           </>
         ) : (
-          <LinkButton text="Deslogar" onClick={deslogar} />
+          <LinkButton text="Deslogar" onClick={onDeslogar} />
         )}
       </div>
     </nav>

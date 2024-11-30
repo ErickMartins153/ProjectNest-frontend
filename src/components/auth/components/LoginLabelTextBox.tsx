@@ -21,6 +21,7 @@ export default function LoginLabelTextBox({
       hidable={hidable}
       labelClassName="ps-3 text-white text-2xl inline-block"
       textBoxClassName="mt-2"
+      autoComplete="on"
       onChange={onChange}
     />
   );

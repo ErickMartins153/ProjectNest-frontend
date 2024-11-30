@@ -11,6 +11,7 @@ export type TextBoxProps = {
   placeHolder?: string;
   value?: string
   hidable?: boolean;
+  autoComplete?: "off" | "on"
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   required?: boolean;
 };
@@ -23,6 +24,7 @@ export default function TextBox({
   hidable,
   onChange,
   required = false,
+  autoComplete = "off",
   placeHolder,
   value
 }: TextBoxProps) {
@@ -47,7 +49,7 @@ export default function TextBox({
         required={required}
         placeholder={placeHolder}
         value={value}
-        autoComplete="off"
+        autoComplete={autoComplete}
       />
       {hidable && (
         <div
