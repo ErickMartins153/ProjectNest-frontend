@@ -9,6 +9,7 @@ import About from "./pages/About.tsx";
 import Profile from "./pages/profile/Profile.tsx";
 import UpdateProfile from "./pages/profile/UpdateProfile.tsx";
 import { useEffect } from "react";
+import ProjetoDetalhes from "./pages/ProjetoDetalhes.tsx";
 
 function App() {
   const { usuario, refresh, isLoading } = useAuth();
@@ -37,6 +38,7 @@ function App() {
         </>
       ) : (
         <>
+          <Route path="/profile/:uuid" element={<Profile/>} />
           <Route path="/update-profile" element={<UpdateProfile />} />
           <Route path="/" element={<Dashboard />} />
           <Route path="/projetos/:uuid" element={<ProjetoDetalhes />} />
