@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Login from "./components/auth/Login.tsx";
 import HomePage from "./pages/HomePage.tsx";
 import Auth from "./components/auth/Auth.tsx";
@@ -7,12 +7,11 @@ import useAuth from "./hooks/useAuth.ts";
 import Dashboard from "./pages/Dashboard.tsx";
 import About from "./components/About.tsx";
 import ProjetoDetalhes from "./pages/ProjetoDetalhes.tsx";
-// import Profile from "./pages/profile/Profile.tsx";
 
 function App() {
   const { usuario, isLoading } = useAuth();
 
-  if (isLoading || !usuario) return;
+  if (isLoading) return null;
 
   return (
     <Routes>
@@ -25,12 +24,11 @@ function App() {
         </>
       ) : (
         <>
-          <Route path="/auth/login" element={<Auth Child={Login} />} />
           <Route path="/" element={<Dashboard />} />
-          {/* <Route path="/profile/:uuid" element={<Profile/>} /> */}
           <Route path="/projetos/:uuid" element={<ProjetoDetalhes />} />
         </>
       )}
+      <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   );
 }
