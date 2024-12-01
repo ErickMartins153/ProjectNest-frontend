@@ -1,3 +1,4 @@
+import { Contribuicao } from "../models/contribuicao/Contribuicao";
 import { ExceptionBody } from "../models/error/ExceptionBody";
 import { Projeto } from "../models/projetos/Projeto";
 import { ProjetoCreation } from "../models/projetos/ProjetoCreation";
@@ -69,8 +70,50 @@ async function getProjetoByUuid(idProjeto: string, tokenUsuario: string) {
   });
 }
 
+async function atualizarProjeto(projeto: Projeto, token: string) {
+  return tryCatch(async () => {
+    const response = await fetch(baseUrl, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(projeto),
+      method: "PUT",
+    });
+
+    if (!response.ok) {
+      const error = (await response.json()) as ExceptionBody;
+      throw error;
+    }
+
+    return (await response.json()) as Projeto;
+  });
+}
+
+async function findContribuicoes(idProjeto: string, tokenUsuario: string) {
+  return tryCatch(async () => {
+    const response = await fetch(`${baseUrl}/${idProjeto}/contribuicoes`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${tokenUsuario}`,
+      },
+      method: "GET",
+    });
+
+    if (!response.ok) {
+      const error = (await response.json()) as ExceptionBody;
+      throw error;
+    }
+
+    const contribuicao = (await response.json()) as Contribuicao[];
+    return contribuicao;
+  });
+}
+
 export const projetoService = {
   criarProjeto,
   getAllProjetos,
   getProjetoByUuid,
+  atualizarProjeto,
+  findContribuicoes,
 };

@@ -29,7 +29,7 @@ export default function ProjetoList({
 
   return (
     <div className="">
-      <div className="flex flex-row justify-between">
+      <div className="flex flex-row justify-between mb-4">
         <div className="flex flex-row gap-4">
           <Button
             text="Estudantes"

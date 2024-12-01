@@ -20,7 +20,7 @@ export default function ProjetoItem({ projeto }: ProjetoItemProps) {
     if (!projeto) return;
 
     async function fetchDonoProjeto() {
-      const dono = await usuarioService.getUsuarioByUuid(
+      const dono = await usuarioService.findByUUID(
         projeto!.idDono,
         usuario!.token,
       );

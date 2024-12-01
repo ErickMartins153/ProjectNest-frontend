@@ -6,9 +6,10 @@ import Register from "./components/auth/Register.tsx";
 import useAuth from "./hooks/useAuth.ts";
 import Dashboard from "./pages/Dashboard.tsx";
 import About from "./pages/About.tsx";
-import Profile from "./pages/profile/Profile.tsx";
+// import Profile from "./pages/profile/Profile.tsx";
 import UpdateProfile from "./pages/profile/UpdateProfile.tsx";
 import { useEffect } from "react";
+import ProjetoDetalhes from "./pages/ProjetoDetalhes.tsx";
 
 function App() {
   const { usuario, refresh, isLoading } = useAuth();
