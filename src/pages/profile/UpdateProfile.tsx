@@ -36,9 +36,10 @@ export default function UpdateProfile() {
     );
   };
 
-  function sendUpdate() {
-    usuarioService.updateUsuario(usuarioUpdate, usuario!.token)
+  async function sendUpdate() {
+    await usuarioService.updateUsuario(usuarioUpdate, usuario!.token)
     refresh(usuario!.token)
+    alert("Usuário atualizado!")
   }
 
   return (<>

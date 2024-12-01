@@ -38,6 +38,7 @@ function App() {
         </>
       ) : (
         <>
+          <Route path="/profile/:uuid" element={<Profile/>} />
           <Route path="/update-profile" element={<UpdateProfile />} />
           <Route path="/" element={<Dashboard />} />
           <Route path="/projetos/:uuid" element={<ProjetoDetalhes />} />

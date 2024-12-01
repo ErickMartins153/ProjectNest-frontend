@@ -4,10 +4,17 @@ import LinkButton from "./LinkButton.tsx";
 import useAuth from "../../hooks/useAuth.ts";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function Navbar() {
   const { deslogar, usuario } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
+  const navigator = useNavigate();
+
+  async function onDeslogar() {
+    await deslogar();
+    navigator("/")
+  }
 
   return (
     <nav className="bg-primary-color shadow-bottom">
@@ -49,7 +56,7 @@ export default function Navbar() {
               <LinkButton text="Cadastrar" path="/auth/register" />
             </>
           ) : (
-            <LinkButton text="Deslogar" onClick={deslogar} />
+            <LinkButton text="Deslogar" onClick={onDeslogar} />
           )}
         </div>
       </div>
