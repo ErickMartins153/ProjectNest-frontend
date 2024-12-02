@@ -14,7 +14,7 @@ const defaultProjeto: ProjetoCreation = {
   titulo: "",
   descricao: "",
   urlRepositorio: "",
-  escopo: "",
+  escopo: "Saúde",
 };
 
 export default function CreateProjectModal({
@@ -43,6 +43,8 @@ export default function CreateProjectModal({
   }
 
   async function handleSubmit() {
+    console.log(novoProjeto);
+
     await criarProjeto({ ...novoProjeto, idDono: usuario!.uuid });
 
     onClose();
