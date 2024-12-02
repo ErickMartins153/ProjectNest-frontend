@@ -53,7 +53,7 @@ export default function ProjetoDetalhes() {
     return (
       <>
         <Navbar />
-        <div className="flex flex-col items-center justify-center h-screen text-white bg-black">
+        <div className="flex h-screen flex-col items-center justify-center bg-[#121212] text-white">
           <h1 className="text-3xl font-bold">Projeto não encontrado</h1>
         </div>
       </>
@@ -61,49 +61,49 @@ export default function ProjetoDetalhes() {
   }
 
   return (
-    <div className="flex flex-col min-h-screen text-white bg-black">
+    <div className="flex min-h-screen flex-col bg-[#121212] text-white">
       <Navbar />
       <div className="flex flex-col items-center p-6">
-        <div className="w-full max-w-4xl p-8 bg-gray-800 rounded-lg shadow-lg">
-          <div className="flex justify-between">
-            <h1 className="mb-4 text-4xl font-bold text-blue-400 capitalize">
+        <div className="w-full max-w-4xl rounded-md bg-[#1f1f1f] p-8 shadow-lg">
+          <div className="flex items-center justify-between mb-6">
+            <h1 className="text-4xl font-bold text-blue-400 capitalize">
               {projeto.titulo}
             </h1>
             {usuario?.uuid === projeto.idDono && (
               <button
                 onClick={() => setIsEditModalOpen(true)}
-                className="px-4 py-2 mt-4 text-white bg-green-500 rounded-md hover:bg-green-600"
+                className="px-4 py-2 text-white transition-all bg-green-600 rounded-md hover:bg-green-700"
               >
                 Editar Projeto
               </button>
             )}
           </div>
-          <div className="space-y-4">
+          <div className="space-y-8">
             <div>
               <h3 className="text-lg font-semibold text-blue-300">
                 Descrição:
               </h3>
-              <p className="mb-6 text-lg text-gray-300 indent-0">
-                {projeto.descricao}
-              </p>
+              <p className="text-gray-300">{projeto.descricao}</p>
             </div>
             <div>
               <h3 className="text-lg font-semibold text-blue-300">Escopo:</h3>
-              <p className="mb-6 text-lg text-gray-300 indent-0">
-                {projeto.escopo}
-              </p>
+              <p className="text-gray-300">{projeto.escopo}</p>
             </div>
             <div>
               <h3 className="text-lg font-semibold text-blue-300">
                 Dono do Projeto:
               </h3>
-              <Link to={`/profile/${donoProjeto?.uuid}`}>
-                <p className="text-xl text-gray-400 capitalize indent-0 hover:underline">
-                  {donoProjeto?.apelido}
-                </p>
+              <Link
+                to={`/profile/${donoProjeto?.uuid}`}
+                className="text-gray-400 hover:underline"
+              >
+                {donoProjeto?.apelido}
               </Link>
             </div>
             <div>
+              <h3 className="text-lg font-semibold text-blue-300">
+                Contribuições:
+              </h3>
               <ContribuicaoList
                 contribuicoes={contribuicoes}
                 showContribuirModal={setIsCreateContribModalOpen}

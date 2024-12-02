@@ -19,7 +19,7 @@ async function registerPessoa(pessoaCreation: PessoaCreation) {
 }
 
 async function registerEmpresa(empresaCreation: EmpresaCreation) {
-  await fetch(`${baseUrl}/usuarios/pessoas`, {
+  await fetch(`${baseUrl}/usuarios/empresas`, {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(empresaCreation),
     method: "POST",

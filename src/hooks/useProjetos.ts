@@ -66,6 +66,15 @@ export function useProjetos({
     }
   }
 
+  async function deletarProjeto(projetoId: string, token: string) {
+    try {
+      await projetoService.deletarProjeto(projetoId, token);
+      await fetchProjetos();
+    } catch (error) {
+      console.error("Error ao deletar projeto", error);
+    }
+  }
+
   return {
     projetos,
     projeto,
@@ -74,5 +83,6 @@ export function useProjetos({
     refetchProjetos: fetchProjetos,
     atualizarProjeto,
     contribuicoes,
+    deletarProjeto,
   };
 }

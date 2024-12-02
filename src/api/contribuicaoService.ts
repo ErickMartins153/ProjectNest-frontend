@@ -1,6 +1,7 @@
 import { Contribuicao } from "../models/contribuicao/Contribuicao";
 import { ContribuicaoCreation } from "../models/contribuicao/ContribuicaoCreation";
 import { ExceptionBody } from "../models/error/ExceptionBody";
+import { Usuario } from "../models/usuarios/Usuario";
 
 import { tryCatch } from "../utils/tryCatch";
 
@@ -118,10 +119,37 @@ async function deletarContribuicao(
   });
 }
 
+async function getContribuintes(
+  idContribuicao: string,
+  idsContribuintes: string[],
+  tokenUsuario: string,
+) {
+  return tryCatch(async () => {
+    console.log(idContribuicao, idsContribuintes, tokenUsuario);
+
+    const response = await fetch(`${baseUrl}/${idContribuicao}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${tokenUsuario}`,
+      },
+      method: "POST",
+      body: JSON.stringify(idsContribuintes),
+    });
+
+    if (!response.ok) {
+      const error = (await response.json()) as ExceptionBody;
+      throw error;
+    }
+
+    return (await response.json()) as Usuario[];
+  });
+}
+
 export const contribuicaoService = {
   criarContribuicao,
   getAllContribuicoes,
   getContribuicaoByUuid,
   atualizarContribuicao,
   deletarContribuicao,
+  getContribuintes,
 };

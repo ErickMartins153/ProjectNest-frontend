@@ -6,10 +6,11 @@ import Register from "./components/auth/Register.tsx";
 import useAuth from "./hooks/useAuth.ts";
 import Dashboard from "./pages/Dashboard.tsx";
 import About from "./pages/About.tsx";
-// import Profile from "./pages/profile/Profile.tsx";
+import Profile from "./pages/profile/Profile.tsx";
 import UpdateProfile from "./pages/profile/UpdateProfile.tsx";
 import { useEffect } from "react";
 import ProjetoDetalhes from "./pages/ProjetoDetalhes.tsx";
+import ContribuicaoDetalhes from "./pages/ContribuicaoDetalhes.tsx";
 
 function App() {
   const { usuario, refresh, isLoading } = useAuth();
@@ -38,10 +39,14 @@ function App() {
         </>
       ) : (
         <>
-          <Route path="/profile/:uuid" element={<Profile/>} />
+          <Route path="/profile/:uuid" element={<Profile />} />
           <Route path="/update-profile" element={<UpdateProfile />} />
           <Route path="/" element={<Dashboard />} />
           <Route path="/projetos/:uuid" element={<ProjetoDetalhes />} />
+          <Route
+            path="/contribuicoes/:uuid"
+            element={<ContribuicaoDetalhes />}
+          />
         </>
       )}
       <Route path="*" element={<Navigate to="/" />} />

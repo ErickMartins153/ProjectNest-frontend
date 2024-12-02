@@ -9,9 +9,9 @@ export type TextBoxProps = {
   textBoxClassName?: string;
   inputClassName?: string;
   placeHolder?: string;
-  value?: string
+  value?: string;
   hidable?: boolean;
-  autoComplete?: "off" | "on"
+  autoComplete?: "off" | "on";
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   required?: boolean;
 };
@@ -26,7 +26,7 @@ export default function TextBox({
   required = false,
   autoComplete = "off",
   placeHolder,
-  value
+  value,
 }: TextBoxProps) {
   const [hidden, setHidden] = useState(true);
 
