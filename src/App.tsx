@@ -11,6 +11,8 @@ import UpdateProfile from "./pages/profile/UpdateProfile.tsx";
 import { useEffect } from "react";
 import ProjetoDetalhes from "./pages/ProjetoDetalhes.tsx";
 import ContribuicaoDetalhes from "./pages/ContribuicaoDetalhes.tsx";
+import SearchProjetos from "./pages/SearchProjetos.tsx";
+import PageLayout from "./components/UI/PageLayout.tsx";
 
 function App() {
   const { usuario, refresh, isLoading } = useAuth();
@@ -30,25 +32,30 @@ function App() {
 
   return (
     <Routes>
-      <Route path="/about" element={<About />} />
-      {!usuario ? (
-        <>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/auth/login" element={<Auth Child={Login} />} />
-          <Route path="/auth/register" element={<Auth Child={Register} />} />
-        </>
-      ) : (
-        <>
-          <Route path="/profile/:uuid" element={<Profile />} />
-          <Route path="/update-profile" element={<UpdateProfile />} />
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/projetos/:uuid" element={<ProjetoDetalhes />} />
-          <Route
-            path="/contribuicoes/:uuid"
-            element={<ContribuicaoDetalhes />}
-          />
-        </>
-      )}
+      <Route path="/" element={<PageLayout />}>
+        <Route path="/about" element={<About />} />
+        <Route path="/projetos/search" element={<SearchProjetos />} />
+
+        {!usuario ? (
+          <>
+            <Route index element={<HomePage />} />
+            <Route path="/auth/login" element={<Auth Child={Login} />} />
+            <Route path="/auth/register" element={<Auth Child={Register} />} />
+          </>
+        ) : (
+          <>
+            <Route index element={<Dashboard />} />
+            <Route path="/profile/:uuid" element={<Profile />} />
+            <Route path="/update-profile" element={<UpdateProfile />} />
+            <Route path="/projetos/:uuid" element={<ProjetoDetalhes />} />
+            <Route
+              path="/contribuicoes/:uuid"
+              element={<ContribuicaoDetalhes />}
+            />
+          </>
+        )}
+      </Route>
+
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   );
