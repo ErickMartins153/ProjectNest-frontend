@@ -130,6 +130,26 @@ async function deletarProjeto(idProjeto: string, tokenUsuario: string) {
   });
 }
 
+async function searchProjetos(query: string, tokenUsuario: string) {
+  return tryCatch(async () => {
+    const response = await fetch(`${baseUrl}/search?title=${query}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${tokenUsuario}`,
+      },
+      method: "GET",
+    });
+
+    if (!response.ok) {
+      const error = (await response.json()) as ExceptionBody;
+      throw error;
+    }
+
+    const projetos = (await response.json()) as Projeto[];
+    return projetos;
+  });
+}
+
 export const projetoService = {
   criarProjeto,
   getAllProjetos,
@@ -137,4 +157,5 @@ export const projetoService = {
   atualizarProjeto,
   findContribuicoes,
   deletarProjeto,
+  searchProjetos,
 };
