@@ -21,7 +21,7 @@ export default function ProjetoItem({ projeto }: ProjetoItemProps) {
 
     async function fetchDonoProjeto() {
       const dono = await usuarioService.findByUUID(
-        projeto!.idDono,
+        projeto.idDono,
         usuario!.token,
       );
       setDonoProjeto(dono || null);
@@ -31,24 +31,25 @@ export default function ProjetoItem({ projeto }: ProjetoItemProps) {
   }, [projeto, usuario]);
 
   function toDetailsHandler() {
-    navigate(`projetos/${projeto.uuid}`);
+    navigate(`/projetos/${projeto.uuid}`);
   }
 
   return (
     <div
-      className="preto m-4 aspect-square min-w-[100px] transform rounded-md border-4 bg-[#e6e6e6] p-8 shadow-lg transition-all duration-300 ease-in-out hover:scale-110 hover:cursor-pointer hover:border-blue-400 hover:bg-blue-100"
+      className="flex transform flex-col justify-between rounded-md bg-[#404040] p-6 shadow-md transition-transform hover:scale-105 hover:cursor-pointer"
       onClick={toDetailsHandler}
     >
       <div className="flex items-center gap-4 mb-4">
-        <FaProjectDiagram size={24} className="text-blue-400 capitalize" />
-        <h3 className="text-xl font-bold">{projeto.titulo}</h3>
+        <FaProjectDiagram size={24} className="text-blue-400" />
+        <h3 className="text-2xl font-bold text-white">{projeto.titulo}</h3>
       </div>
-      <h4 className="text-gray-500">{projeto.descricao}</h4>
-
-      <div className="flex justify-between mt-4 text-sm text-gray-400">
+      <p className="mb-4 text-gray-300">{projeto.descricao}</p>
+      <div className="flex items-center justify-between text-sm text-gray-400">
         <div className="flex items-center gap-1">
           <FaUserAlt />
-          <span className="capitalize">{donoProjeto?.apelido}</span>
+          <span className="capitalize">
+            {donoProjeto?.apelido || "Desconhecido"}
+          </span>
         </div>
       </div>
     </div>

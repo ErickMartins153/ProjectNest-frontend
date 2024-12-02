@@ -2,8 +2,8 @@ import Avatar from "../../../components/UI/Avatar.tsx";
 import { Usuario } from "../../../models/usuarios/Usuario.ts";
 
 type ProfileInfoProps = {
-  usuario: Usuario
-}
+  usuario: Usuario;
+};
 
 export default function ProfileInfo({ usuario }: ProfileInfoProps) {
   return (
@@ -16,7 +16,7 @@ export default function ProfileInfo({ usuario }: ProfileInfoProps) {
         />
       </div>
       <div className="ps-4">
-        <h2 className="text-6xl">{usuario!.apelido}</h2>
+        <h2 className="text-6xl capitalize">{usuario!.apelido}</h2>
       </div>
     </>
   );

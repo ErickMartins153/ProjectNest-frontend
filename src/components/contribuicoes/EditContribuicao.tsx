@@ -1,54 +1,52 @@
 import { createPortal } from "react-dom";
 import { useState, useEffect } from "react";
-import { Projeto } from "../../models/projetos/Projeto";
-import { useProjetos } from "../../hooks/useProjetos";
 import useAuth from "../../hooks/useAuth";
 import Input from "../UI/Input";
-import { useNavigate } from "react-router-dom";
+import { Contribuicao } from "../../models/contribuicao/Contribuicao";
+import { useContribuicoes } from "../../hooks/useContribuicoes";
 
-type EditProjectModalProps = {
-  projeto: Projeto;
+type EditContribuicaoModalProps = {
+  contribuicao: Contribuicao;
   onClose: () => void;
 };
 
-export default function EditProject({
-  projeto,
+export default function EditContribuicao({
+  contribuicao,
   onClose,
-}: EditProjectModalProps) {
+}: EditContribuicaoModalProps) {
   const [isVisible, setIsVisible] = useState(false);
-  const [projetoEditado, setProjetoEditado] = useState<Projeto>(projeto);
+  const [contribuicaoEditada, setContribuicaoEditada] =
+    useState<Contribuicao>(contribuicao);
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
 
   const { usuario } = useAuth();
-  const { atualizarProjeto, deletarProjeto } = useProjetos({
+  const { atualizarContribuicao, deletarContribuicao } = useContribuicoes({
     token: usuario!.token,
   });
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     setIsVisible(true);
     return () => setIsVisible(false);
   }, []);
 
-  function onChangeHandler<T extends keyof Projeto>(
+  function onChangeHandler<T extends keyof Contribuicao>(
     field: T,
-    value: Projeto[T],
+    value: Contribuicao[T],
   ) {
-    setProjetoEditado((prevState) => ({
+    setContribuicaoEditada((prevState) => ({
       ...prevState,
       [field]: value,
     }));
   }
 
   async function handleSubmit() {
-    await atualizarProjeto(projetoEditado);
+    await atualizarContribuicao(contribuicaoEditada);
     onClose();
   }
 
   async function handleDelete() {
-    await deletarProjeto(projeto.uuid, usuario!.token);
-    navigate("/");
+    await deletarContribuicao(contribuicao.uuid);
+    onClose();
   }
 
   return createPortal(
@@ -73,62 +71,40 @@ export default function EditProject({
           </button>
 
           <div className="w-full">
-            <h2 className="mb-2 text-center text-black">Editar Projeto</h2>
+            <h2 className="mb-2 text-center text-black">Editar Contribuição</h2>
 
             <Input
               label="Título"
-              value={projetoEditado.titulo}
+              value={contribuicaoEditada.titulo}
               onChange={(e) => onChangeHandler("titulo", e.target.value)}
               required
             />
             <Input
               label="Descrição"
-              value={projetoEditado.descricao}
+              value={contribuicaoEditada.descricao}
               onChange={(e) => onChangeHandler("descricao", e.target.value)}
               required
             />
             <Input
-              label="URL do Repositório"
-              value={projetoEditado.urlRepositorio}
+              label="URL do Repositório (opcional)"
+              value={contribuicaoEditada.urlRepositorio || ""}
               onChange={(e) =>
-                onChangeHandler("urlRepositorio", e.target.value)
+                onChangeHandler("urlRepositorio", e.target.value || undefined)
               }
-              required
             />
-            <div className="mb-4">
-              <label className="block text-sm font-semibold text-gray-700">
-                Escopo
-              </label>
-              <select
-                className="block w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
-                value={projetoEditado.escopo}
-                onChange={(e) => onChangeHandler("escopo", e.target.value)}
-                required
-              >
-                <option value="SAUDE">Saúde</option>
-                <option value="Gerenciamento">Gerenciamento</option>
-                <option value="Inteligência Artificial">
-                  Inteligência Artificial
-                </option>
-                <option value="Educação">Educação</option>
-                <option value="Culinária">Culinária</option>
-                <option value="Jogo">Jogo</option>
-                <option value="Biologia">Biologia</option>
-              </select>
-            </div>
 
             <button
               className="w-full px-4 py-2 mt-4 text-white bg-blue-500 rounded-md hover:bg-blue-600"
               onClick={handleSubmit}
             >
-              Atualizar Projeto
+              Atualizar Contribuição
             </button>
 
             <button
               className="w-full px-4 py-2 mt-4 text-white bg-red-500 rounded-md hover:bg-red-600"
               onClick={() => setIsDeleteConfirmOpen(true)}
             >
-              Deletar Projeto
+              Deletar Contribuição
             </button>
           </div>
         </div>
@@ -143,8 +119,8 @@ export default function EditProject({
           ></div>
           <div className="relative z-10 p-4 bg-white rounded-lg shadow-lg w-96">
             <h3 className="mb-4 text-center text-black">
-              Tem certeza que deseja deletar o projeto{" "}
-              <span className="font-semibold">{projeto.titulo}</span>?
+              Tem certeza que deseja deletar a contribuição{" "}
+              <span className="font-semibold">{contribuicao.titulo}</span>?
             </h3>
             <div className="flex justify-between">
               <button

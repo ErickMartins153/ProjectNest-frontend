@@ -13,14 +13,12 @@ export default function ContribuicaoList({
 }: ContribuicaoListProps) {
   return (
     <div className="mt-4">
-      <div className="flex flex-row justify-between mb-4"></div>
-      <div className="p-4 bg-gray-200 border rounded-md shadow-lg">
-        <div className="flex items-center justify-between mb-4 align-middle preto">
-          <h2 className="mb-4 text-2xl">Contribuições</h2>
-
+      <div className="p-6 bg-gray-900 border rounded-lg shadow-lg">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-bold text-blue-300">Contribuições</h2>
           <button
             onClick={() => showContribuirModal(true)}
-            className="px-4 py-2 text-white bg-green-500 rounded-md hover:bg-green-600"
+            className="px-4 py-2 text-sm font-semibold text-white transition-all bg-green-600 rounded-md hover:bg-green-700"
           >
             Adicionar Contribuição
           </button>
@@ -34,7 +32,7 @@ export default function ContribuicaoList({
               />
             ))
           ) : (
-            <p className="text-gray-500">Nenhuma contribuição encontrada.</p>
+            <p className="text-gray-400">Nenhuma contribuição encontrada.</p>
           )}
         </div>
       </div>
