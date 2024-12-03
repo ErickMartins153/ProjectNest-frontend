@@ -1,15 +1,16 @@
 import ProfileInfo from "./components/ProfileInfo.tsx";
 import { BsGearFill } from "@react-icons/all-files/bs/BsGearFill";
-import { useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth.ts";
 import { Usuario } from "../../models/usuarios/Usuario.ts";
 import ProjetoList from "../../components/projeto/ProjetoList.tsx";
+import ProfileConfigModal from "./ProfileConfigModal.tsx";
+import { useState } from "react";
 
 export default function OwnProfile() {
-  const navigate = useNavigate();
+  const [ showModal, setShowModal ] = useState(false);
   const { usuario } = useAuth();
 
-  const goTo = (path: string) => () => navigate(path);
+  const toggleModal = () => setShowModal((prev) => !prev);
 
   return (
     <>
@@ -17,12 +18,13 @@ export default function OwnProfile() {
         <BsGearFill
           className="text-white cursor-pointer ms-auto"
           size={"2.4rem"}
-          onClick={goTo("/update-profile")}
+          onClick={toggleModal}
         />
         <div className="flex flex-col items-center h-full md:flex-row">
           <ProfileInfo usuario={usuario as Usuario} />
         </div>
       </div>
+      {showModal && <ProfileConfigModal toggleModal={toggleModal}/>}
       <section id="projetos" className="px-8 pb-8">
         <div className="py-4">
           <ProjetoList />

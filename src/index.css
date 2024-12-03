@@ -21,6 +21,10 @@ ul.list-disc > li {
   color: unset;
 }
 
+.text-white * {
+  color: unset;
+}
+
 p {
   @apply indent-8 text-white;
 }

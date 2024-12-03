@@ -1,5 +1,4 @@
 import useAuth from "../../hooks/useAuth.ts";
-import Navbar from "../../components/UI/Navbar.tsx";
 import Avatar from "../../components/UI/Avatar.tsx";
 import LabelTextBox from "../../components/UI/LabelTextBox.tsx";
 import { isPessoa } from "../../models/usuarios/Pessoa.ts";
@@ -37,43 +36,42 @@ export default function UpdateProfile() {
   };
 
   async function sendUpdate() {
-    await usuarioService.updateUsuario(usuarioUpdate, usuario!.token)
-    refresh(usuario!.token)
-    alert("Usuário atualizado!")
+    const updated = await usuarioService.updateUsuario(usuarioUpdate, usuario!.token)
+    if (updated) {
+      refresh(usuario!.token)
+      alert("Usuário atualizado!")
+    }
   }
 
   return (<>
-    <div className="flex flex-col h-screen w-full bg-black overflow-auto">
-      <Navbar />
-      <div className="bg-primary-color h-max m-8 p-8 rounded-3xl">
-        <h1 className="text-center mb-8">Atualizar Perfil</h1>
-        <form className="flex flex-col items-center gap-8">
-          <div className="aspect-square h-[12rem] sm:h-[16rem] md:h-[20rem]">
-            <Avatar
-              url="https://i.pinimg.com/736x/a8/63/95/a86395b7138d4b0e72ccd1aef82a6e06.jpg"
-              alt="Ursão" size={"100%"}
-            />
-          </div>
-
-          {getLabelTextBox(usuarioUpdate.apelido, "Apelido", "apelido", onFieldChange)}
-
-          {(isPessoaUpdate(usuarioUpdate)) &&
-            getPessoaFields(usuarioUpdate, onFieldChange)}
-
-          {isEmpresaUpdate(usuarioUpdate) &&
-            getEmpresaFields(usuarioUpdate, onFieldChange)}
-
-          <LinkButton className="h-16 w-32 text-2xl" text="Atualizar" onClick={sendUpdate}/>
-        </form>
+    <h1 className="text-center mb-8">Atualizar Perfil</h1>
+    <form className="flex flex-col items-center gap-8 text-black">
+      <div className="aspect-square h-[12rem] sm:h-[16rem] md:h-[20rem]">
+        <Avatar
+          url="https://i.pinimg.com/736x/a8/63/95/a86395b7138d4b0e72ccd1aef82a6e06.jpg"
+          alt="Ursão" size={"100%"}
+        />
       </div>
-    </div>
+
+      {getLabelTextBox(usuarioUpdate.apelido, "Apelido", "apelido", onFieldChange)}
+
+      {(isPessoaUpdate(usuarioUpdate)) &&
+        getPessoaFields(usuarioUpdate, onFieldChange)}
+
+      {isEmpresaUpdate(usuarioUpdate) &&
+        getEmpresaFields(usuarioUpdate, onFieldChange)}
+
+      <LinkButton className="h-16 w-32 text-2xl" text="Atualizar" onClick={sendUpdate}/>
+    </form>
   </>);
 }
+
 
 function getUsuarioUpdate(usuario: Usuario): UsuarioUpdate {
   if (isPessoa(usuario)) return fromPessoa(usuario);
   return fromEmpresa(usuario as Empresa);
 }
+
 
 function getLabelTextBox(
   valuePlaceHolder: string,
@@ -85,11 +83,13 @@ function getLabelTextBox(
     <LabelTextBox
       label={label}
       labelClassName="text-white text-[1.6em] ps-4"
-      labelTextBoxClassName="!w-[40%]" id={name} name={name}
+      inputClassName="!text-black"
+      labelTextBoxClassName="!w-[90%]" id={name} name={name}
       placeHolder={valuePlaceHolder} value={valuePlaceHolder}
       onChange={onChangeHandler.bind(null, name)}/>
   </>);
 }
+
 
 function getPessoaFields(pessoa: PessoaUpdate, handler: OnFieldChange) {
   return (<>
@@ -98,6 +98,7 @@ function getPessoaFields(pessoa: PessoaUpdate, handler: OnFieldChange) {
     {getLabelTextBox((pessoa.pronomes ? pessoa.pronomes : ""), "Pronomes", "pronomes", handler)}
   </>)
 }
+
 
 function getEmpresaFields(empresa: EmpresaUpdate, handler: OnFieldChange) {
   return (<>
