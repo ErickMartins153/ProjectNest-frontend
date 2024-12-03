@@ -3,16 +3,23 @@ import Button from "../UI/Button";
 import CreateProjectModal from "./CreateProject";
 import ProjetoItem from "./ProjetoItem";
 
-import { useProjetos } from "../../hooks/useProjetos";
-import useAuth from "../../hooks/useAuth";
+import { Projeto } from "../../models/projetos/Projeto";
 
-export default function ProjetoList() {
+type ProjetoListProps = {
+  projetos: Projeto[];
+  refetchProjetos?: () => void;
+};
+
+export default function ProjetoList({
+  projetos,
+  refetchProjetos,
+}: ProjetoListProps) {
   const [showModal, setShowModal] = useState(false);
-  const { usuario } = useAuth();
-  const { refetchProjetos, projetos } = useProjetos({ token: usuario!.token });
 
   function modalHandler() {
-    refetchProjetos();
+    if (refetchProjetos) {
+      refetchProjetos();
+    }
     setShowModal((prev) => !prev);
   }
 

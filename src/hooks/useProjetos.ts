@@ -48,6 +48,18 @@ export function useProjetos({
     fetchProjetos();
   }, [selectedCategory, token, uuid, fetchProjetos]);
 
+  async function buscarProjetos(query: string) {
+    setIsLoading(true);
+    try {
+      const projetos = await projetoService.searchProjetos(query, token);
+      setProjetos(projetos || []);
+    } catch (error) {
+      console.error("Erro ao buscar projetos:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
   async function criarProjeto(projeto: ProjetoCreation) {
     try {
       await projetoService.criarProjeto(projeto, token);
@@ -79,6 +91,7 @@ export function useProjetos({
     projetos,
     projeto,
     isLoading,
+    buscarProjetos,
     criarProjeto,
     refetchProjetos: fetchProjetos,
     atualizarProjeto,

@@ -1,5 +1,4 @@
 import { Link, useParams } from "react-router-dom";
-import Navbar from "../components/UI/Navbar";
 import Loading from "../components/UI/Loading";
 import { useState, useEffect } from "react";
 
@@ -30,7 +29,6 @@ export default function ContribuicaoDetalhes() {
   if (!contribuicao) {
     return (
       <>
-        <Navbar />
         <div className="flex h-screen flex-col items-center justify-center bg-[#121212] text-white">
           <h1 className="text-3xl font-bold">Contribuição não encontrada</h1>
         </div>
@@ -40,7 +38,6 @@ export default function ContribuicaoDetalhes() {
 
   return (
     <div className="flex min-h-screen flex-col bg-[#121212] text-white">
-      <Navbar />
       <div className="flex flex-col items-center p-6">
         <div className="w-full max-w-4xl rounded-md bg-[#1f1f1f] p-8 shadow-lg">
           <div className="flex items-center justify-between mb-6">
