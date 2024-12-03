@@ -27,7 +27,7 @@ export default function OwnProfile() {
       {showModal && <ProfileConfigModal toggleModal={toggleModal}/>}
       <section id="projetos" className="px-8 pb-8">
         <div className="py-4">
-          <ProjetoList />
+          <ProjetoList projetos={[]}/>
         </div>
       </section>
     </>

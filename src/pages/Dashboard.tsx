@@ -9,6 +9,7 @@ export default function Dashboard() {
   const { projetos, refetchProjetos } = useProjetos({ token: usuario!.token });
   return (
     <div className="flex flex-col w-full bg-black">
+      <Navbar />
       <div className="flex flex-col px-6 py-4">
         <UserLabel />
         <ProjetoList projetos={projetos} refetchProjetos={refetchProjetos} />
