@@ -26,6 +26,8 @@ async function updateUsuario(usuarioUpdate: UsuarioUpdate, token: string) {
     if (!response.ok) {
       throw (await response.json()) as ExceptionBody;
     }
+
+    return true;
   });
 }
 

@@ -19,6 +19,7 @@ type AuthContextProps = {
   logar: (credenciais: Credenciais) => Promise<void>;
   registrar: (data: RegisterData) => Promise<void>;
   refresh: (token: string) => void;
+  changePassword: (oldPassword: string, newPassword: string) => Promise<boolean | void>;
   deslogar: () => Promise<void>;
   isLoading: boolean;
 };
@@ -28,6 +29,7 @@ export const AuthContext = createContext<AuthContextProps>({
   logar: async () => {},
   registrar: async () => {},
   refresh: async () => {},
+  changePassword: async () => {},
   usuario: null,
   isLoading: false,
 });
@@ -78,17 +80,21 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
     localStorage.setItem("usuario", JSON.stringify(usuarioLogado));
   }
 
+  async function changePassword(oldPassword: string, newPassword: string) {
+    return await authService.changePassword(usuario!.uuid, oldPassword, newPassword, usuario!.token);
+  }
+
   async function deslogar() {
-    await localStorage.removeItem("usuario");
+    localStorage.removeItem("usuario");
     setUsuario(null);
   }
 
   async function registrar(data: RegisterData) {
     if (data.type === UsuarioType.PESSOA) {
-      authService.registerPessoa(data as PessoaCreation);
+      await authService.registerPessoa(data as PessoaCreation);
       return;
     } else if (data.type === UsuarioType.EMPRESA) {
-      authService.registerEmpresa(data as EmpresaCreation);
+      await authService.registerEmpresa(data as EmpresaCreation);
       return;
     }
     return;
@@ -101,6 +107,7 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
     registrar,
     isLoading,
     refresh,
+    changePassword,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

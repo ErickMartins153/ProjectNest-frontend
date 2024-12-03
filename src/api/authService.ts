@@ -51,6 +51,28 @@ async function logar(credenciais: Credenciais) {
   });
 }
 
+async function changePassword(uuid: string, oldPassword: string, newPassword: string, token: string) {
+  return tryCatch(async () => {
+    const response = await fetch(
+      `${baseUrl}/usuarios/${uuid}/password`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({oldPassword: oldPassword, newPassword: newPassword}),
+        method: "PATCH",
+      },
+    );
+
+    if (!response.ok) {
+      throw (await response.json()) as ExceptionBody;
+    }
+
+    return true
+  });
+}
+
 async function refresh(token: string): Promise<AuthResponse | null> {
   const response = await tryCatch(
     async () =>
@@ -72,4 +94,10 @@ async function refresh(token: string): Promise<AuthResponse | null> {
   return { ...data.usuarioDTO, ...data.tokenDTO };
 }
 
-export const authService = { registerPessoa, logar, registerEmpresa, refresh };
+export const authService = {
+  registerPessoa,
+  logar,
+  registerEmpresa,
+  refresh,
+  changePassword
+};
