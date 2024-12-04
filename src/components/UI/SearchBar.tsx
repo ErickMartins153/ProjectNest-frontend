@@ -1,12 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import useAuth from "../../hooks/useAuth";
 import { useProjetos } from "../../hooks/useProjetos";
 import { Usuario } from "../../models/usuarios/Usuario";
 
 export default function SearchBar() {
-  const { usuario } = useAuth();
-  const { buscarProjetos } = useProjetos({ token: usuario!.token });
+  const { buscarProjetos } = useProjetos({ });
   const [searchType, setSearchType] = useState<"projeto" | "usuario">(
     "projeto",
   );

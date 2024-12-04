@@ -7,7 +7,7 @@ import { Contribuicao } from "../models/contribuicao/Contribuicao";
 
 interface UseProjetosParams {
   selectedCategory?: keyof typeof Categorias | "";
-  token: string;
+  token?: string;
   uuid?: string;
 }
 
@@ -25,15 +25,12 @@ export function useProjetos({
     setIsLoading(true);
     try {
       if (uuid) {
-        const projeto = await projetoService.getProjetoByUuid(uuid, token);
+        const projeto = await projetoService.getProjetoByUuid(uuid);
         setProjeto(projeto || null);
-        const contribuicoes = await projetoService.findContribuicoes(
-          uuid,
-          token,
-        );
+        const contribuicoes = await projetoService.findContribuicoes(uuid);
         setContribuicoes(contribuicoes || []);
       } else {
-        const projetos = (await projetoService.getAllProjetos(token)) || [];
+        const projetos = (await projetoService.getAllProjetos()) || [];
         setProjetos(projetos);
       }
     } catch (error) {
@@ -51,7 +48,7 @@ export function useProjetos({
   async function buscarProjetos(query: string) {
     setIsLoading(true);
     try {
-      const projetos = await projetoService.searchProjetos(query, token);
+      const projetos = await projetoService.searchProjetos(query);
       setProjetos(projetos || []);
     } catch (error) {
       console.error("Erro ao buscar projetos:", error);
@@ -62,7 +59,7 @@ export function useProjetos({
 
   async function criarProjeto(projeto: ProjetoCreation) {
     try {
-      await projetoService.criarProjeto(projeto, token);
+      await projetoService.criarProjeto(projeto, token!);
       await fetchProjetos();
     } catch (error) {
       console.error("Erro ao criar projeto:", error);
@@ -71,7 +68,7 @@ export function useProjetos({
 
   async function atualizarProjeto(projeto: Projeto) {
     try {
-      await projetoService.atualizarProjeto(projeto, token);
+      await projetoService.atualizarProjeto(projeto, token!);
       await fetchProjetos();
     } catch (error) {
       console.error("Erro ao atualizar projeto:", error);

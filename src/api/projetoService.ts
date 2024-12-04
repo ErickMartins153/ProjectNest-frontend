@@ -29,13 +29,11 @@ async function criarProjeto(
   });
 }
 
-async function getAllProjetos(tokenUsuario: string) {
-  if (!tokenUsuario) return;
+async function getAllProjetos() {
   return tryCatch(async () => {
     const response = await fetch(`${baseUrl}`, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${tokenUsuario}`,
       },
       method: "GET",
     });
@@ -50,12 +48,11 @@ async function getAllProjetos(tokenUsuario: string) {
   });
 }
 
-async function getProjetoByUuid(idProjeto: string, tokenUsuario: string) {
+async function getProjetoByUuid(idProjeto: string) {
   return tryCatch(async () => {
     const response = await fetch(`${baseUrl}/${idProjeto}`, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${tokenUsuario}`,
       },
       method: "GET",
     });
@@ -90,12 +87,11 @@ async function atualizarProjeto(projeto: Projeto, token: string) {
   });
 }
 
-async function findContribuicoes(idProjeto: string, tokenUsuario: string) {
+async function findContribuicoes(idProjeto: string) {
   return tryCatch(async () => {
     const response = await fetch(`${baseUrl}/${idProjeto}/contribuicoes`, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${tokenUsuario}`,
       },
       method: "GET",
     });
@@ -130,12 +126,11 @@ async function deletarProjeto(idProjeto: string, tokenUsuario: string) {
   });
 }
 
-async function searchProjetos(query: string, tokenUsuario: string) {
+async function searchProjetos(query: string) {
   return tryCatch(async () => {
     const response = await fetch(`${baseUrl}/search?title=${query}`, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${tokenUsuario}`,
       },
       method: "GET",
     });
