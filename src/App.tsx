@@ -13,6 +13,7 @@ import ProjetoDetalhes from "./pages/ProjetoDetalhes.tsx";
 import ContribuicaoDetalhes from "./pages/ContribuicaoDetalhes.tsx";
 import SearchProjetos from "./pages/SearchProjetos.tsx";
 import PageLayout from "./components/UI/PageLayout.tsx";
+import SearchUsuarios from "./pages/usuarios/SearchUsuarios.tsx";
 
 function App() {
   const { usuario, refresh, isLoading } = useAuth();
@@ -39,9 +40,8 @@ function App() {
             <Route path="/auth/register" element={<Auth Child={Register} />} />
             <Route path="/" element={<PageLayout />}/>
             <Route path="/about" element={<About />} />
-            <Route path="/projetos/search" element={<SearchProjetos />} />
           </>
-        ) : (
+          ) : (
           <>
             <Route index element={<Dashboard />} />
             <Route path="/profile/:uuid" element={<Profile />} />
@@ -51,6 +51,9 @@ function App() {
             <Route path="/contribuicoes/:uuid" element={<ContribuicaoDetalhes />} />
           </>
         )}
+      <Route path="/profile/:uuid" element={<Profile />} />
+      <Route path="/projetos/search" element={<SearchProjetos />} />
+      <Route path="/usuarios/search" element={<SearchUsuarios />} />
     </Routes>
   );
 }

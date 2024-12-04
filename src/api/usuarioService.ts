@@ -3,6 +3,7 @@ import { UsuarioType } from "../models/usuarios/enums/UsuarioType.ts";
 import { tryCatch } from "../utils/tryCatch.ts";
 import { ExceptionBody } from "../models/error/ExceptionBody.ts";
 import { Usuario } from "../models/usuarios/Usuario.ts";
+import PagedModel from "../models/common/PagedModel.ts";
 
 const baseUrl = `${import.meta.env.VITE_BASE_URL}/usuarios`;
 
@@ -31,15 +32,11 @@ async function updateUsuario(usuarioUpdate: UsuarioUpdate, token: string) {
   });
 }
 
-async function findByUUID(
-  uuid: string,
-  token: string,
-): Promise<void | Usuario> {
+async function findByUUID(uuid: string): Promise<void | Usuario> {
   return tryCatch(async () => {
     const response = await fetch(`${baseUrl}/${uuid}`, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
       },
       method: "GET",
     });
@@ -52,4 +49,21 @@ async function findByUUID(
   });
 }
 
-export const usuarioService = { updateUsuario, findByUUID };
+async function searchByApelido(apelido: string, page: number, size: number) {
+  return tryCatch(async () => {
+    const response = await fetch(`${baseUrl}?apelido=${apelido}&page=${page}&size=${size}`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "GET",
+    });
+
+    if (!response.ok) {
+      throw (await response.json()) as ExceptionBody;
+    }
+
+    return PagedModel.fromJson<Usuario>(await response.json())
+  });
+}
+
+export const usuarioService = { updateUsuario, findByUUID, searchByApelido };

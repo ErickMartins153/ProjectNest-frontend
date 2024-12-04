@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useProjetos } from "../../hooks/useProjetos";
-import { Usuario } from "../../models/usuarios/Usuario";
 
 export default function SearchBar() {
   const { buscarProjetos } = useProjetos({ });
@@ -19,9 +18,7 @@ export default function SearchBar() {
         setSearchQuery("");
         navigate("/projetos/search", { state: { projetos } });
       } else {
-        const usuarios: Usuario[] = [];
-        navigate("/usuarios/search", { state: { usuarios } });
-        console.log("Busca de usuários ainda não implementada.");
+        navigate("/usuarios/search", { state: searchQuery });
       }
     } catch (error) {
       console.error(error);

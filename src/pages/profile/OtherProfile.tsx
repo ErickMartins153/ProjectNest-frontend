@@ -23,7 +23,7 @@ export default function OtherProfile({ uuid }: ProfileProps) {
 
   useEffect( () => {
     const fetchUsuario = async () => {
-      const found = await usuarioService.findByUUID(uuid, usuario!.token);
+      const found = await usuarioService.findByUUID(uuid);
       setOther(found ? found : null);
     }
 
