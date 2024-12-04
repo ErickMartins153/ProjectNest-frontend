@@ -30,7 +30,7 @@ export default function SearchBar() {
       className="flex items-center justify-items-center"
       onSubmit={handleSearch}
     >
-      <div className="flex w-[24em] rounded-lg bg-white">
+      <div className="flex w-[100%] rounded-lg bg-white">
         <div className="flex-grow">
           <input
             type="text"

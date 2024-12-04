@@ -13,12 +13,12 @@ export default function Navbar() {
 
   async function onDeslogar() {
     await deslogar();
-    navigator("/")
+    navigator("/");
   }
 
   return (
     <nav className="bg-primary-color shadow-bottom">
-      <div className="flex items-center justify-between h-24 px-4">
+      <div className="flex h-24 items-center justify-between px-4">
         <Logo className="w-24" />
 
         <button
@@ -27,7 +27,7 @@ export default function Navbar() {
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="w-6 h-6"
+            className="h-6 w-6"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -48,7 +48,7 @@ export default function Navbar() {
 
         <div
           id="auth-options"
-          className="items-center hidden space-x-3 md:flex"
+          className="hidden items-center space-x-3 md:flex"
         >
           {!usuario ? (
             <>
@@ -62,8 +62,7 @@ export default function Navbar() {
       </div>
 
       {menuOpen && (
-        <div className="flex flex-col items-center py-4 space-y-4 md:hidden">
-          <PagesDisplay pages={[{ text: "Sobre", url: "/about" }]} />
+        <div className="flex flex-col w-full items-center space-y-4 py-4 md:hidden">
           <div className="flex flex-col items-center space-y-3">
             {!usuario ? (
               <>
@@ -74,6 +73,10 @@ export default function Navbar() {
               <LinkButton text="Deslogar" onClick={deslogar} />
             )}
           </div>
+          <div className="w-[40%] flex justify-center">
+            <SearchBar />
+          </div>
+          <PagesDisplay pages={[{ text: "Sobre", url: "/about" }]} />
         </div>
       )}
     </nav>
@@ -96,7 +99,7 @@ function PagesDisplay({ pages }: PagesDisplayProps) {
         <li key={page.url}>
           <Link
             to={page.url}
-            className="px-3 py-2 text-xl text-white rounded-md hover:bg-blue-700"
+            className="rounded-md px-3 py-2 text-xl text-white hover:bg-blue-700"
           >
             {page.text}
           </Link>

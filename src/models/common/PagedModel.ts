@@ -34,11 +34,15 @@ export default class PagedModel<T> {
   }
 
   isLast(): boolean {
-    return this.page.number === this.page.totalPages-1;
+    return this.page.number >= this.page.totalPages-1;
   }
 
   isFirst(): boolean {
     return this.page.number === 0;
+  }
+
+  toString(): string {
+    return JSON.stringify({content: this.content, page: this.page});
   }
 
 }
