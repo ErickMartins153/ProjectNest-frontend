@@ -45,6 +45,7 @@ function App() {
           <>
             <Route index element={<Dashboard />} />
             <Route path="/profile/:uuid" element={<Profile />} />
+            <Route path="/auth/login" element={<Auth Child={Login} />} />
             <Route path="/update-profile" element={<UpdateProfile />} />
             <Route path="/projetos/:uuid" element={<ProjetoDetalhes />} />
             <Route path="/contribuicoes/:uuid" element={<ContribuicaoDetalhes />} />
