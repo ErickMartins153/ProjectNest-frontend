@@ -127,6 +127,8 @@ async function deletarProjeto(idProjeto: string, tokenUsuario: string) {
 }
 
 async function searchProjetos(query: string) {
+  console.log(query);
+
   return tryCatch(async () => {
     const response = await fetch(`${baseUrl}/search?title=${query}`, {
       headers: {

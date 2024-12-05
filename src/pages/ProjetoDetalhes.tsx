@@ -11,9 +11,10 @@ import ContribuicaoList from "../components/contribuicoes/ContribuicaoList";
 
 export default function ProjetoDetalhes() {
   const { uuid } = useParams<{ uuid: string }>();
+
   const { usuario } = useAuth();
   const { projeto, isLoading, refetchProjetos, contribuicoes } = useProjetos({
-    token: usuario!.token,
+    token: usuario?.token,
     uuid,
   });
 
@@ -26,10 +27,7 @@ export default function ProjetoDetalhes() {
     if (!projeto) return;
 
     async function fetchDonoProjeto() {
-      const dono = await usuarioService.findByUUID(
-        projeto!.idDono,
-        usuario!.token,
-      );
+      const dono = await usuarioService.findByUUID(projeto!.idDono);
       setDonoProjeto(dono || null);
     }
 
@@ -44,6 +42,16 @@ export default function ProjetoDetalhes() {
   async function onContribSubmit() {
     await refetchProjetos();
     setIsCreateContribModalOpen(false);
+  }
+
+  function onOpenModalHandler() {
+    console.log(usuario);
+
+    if (!usuario) {
+      return alert("Para realizar essa ação você precisa estar logado");
+      setIsEditModalOpen(false);
+    }
+    setIsEditModalOpen(true);
   }
 
   if (isLoading) return <Loading />;
@@ -62,14 +70,14 @@ export default function ProjetoDetalhes() {
     <div className="flex min-h-screen flex-col bg-[#121212] text-white">
       <div className="flex flex-col items-center p-6">
         <div className="w-full max-w-4xl rounded-md bg-[#1f1f1f] p-8 shadow-lg">
-          <div className="flex items-center justify-between mb-6">
-            <h1 className="text-4xl font-bold text-blue-400 capitalize">
+          <div className="mb-6 flex items-center justify-between">
+            <h1 className="text-4xl font-bold capitalize text-blue-400">
               {projeto.titulo}
             </h1>
             {usuario?.uuid === projeto.idDono && (
               <button
                 onClick={() => setIsEditModalOpen(true)}
-                className="px-4 py-2 text-white transition-all bg-green-600 rounded-md hover:bg-green-700"
+                className="rounded-md bg-green-600 px-4 py-2 text-white transition-all hover:bg-green-700"
               >
                 Editar Projeto
               </button>
@@ -103,7 +111,7 @@ export default function ProjetoDetalhes() {
               </h3>
               <ContribuicaoList
                 contribuicoes={contribuicoes}
-                showContribuirModal={setIsCreateContribModalOpen}
+                showContribuirModal={onOpenModalHandler}
               />
             </div>
           </div>

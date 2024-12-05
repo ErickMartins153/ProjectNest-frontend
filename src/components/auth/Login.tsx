@@ -32,6 +32,9 @@ export default function Login() {
   function loginHandler() {
     if (!credenciais.email || !credenciais.senha) return;
     logar(credenciais);
+    console.log("aqui");
+
+    navigate("/");
   }
 
   return (
@@ -43,7 +46,7 @@ export default function Login() {
           labelName="Email"
           onChange={onChangeHandler.bind(null, "email")}
         />
-        <div className="flex flex-col w-full">
+        <div className="flex w-full flex-col">
           <LoginLabelTextBox
             inputName="senha"
             labelName="Senha"
@@ -52,7 +55,7 @@ export default function Login() {
           />
           <Link
             to="/redefinir-senha"
-            className="inline-block text-black decorated ms-auto pe-2"
+            className="decorated ms-auto inline-block pe-2 text-black"
           >
             Esqueci minha senha
           </Link>
@@ -60,14 +63,14 @@ export default function Login() {
         <LinkButton
           text="Entrar"
           onClick={() => loginHandler()}
-          className="text-xl w-36"
+          className="w-36 text-xl"
         />
       </form>
 
       <div className="text-center">
         <p className="text-white">
           Não tem uma conta?
-          <Link to="/auth/register" className="inline decorated text-blackr">
+          <Link to="/auth/register" className="decorated text-blackr inline">
             Cadastrar
           </Link>
         </p>

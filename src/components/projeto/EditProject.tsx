@@ -66,7 +66,7 @@ export default function EditProject({
           }`}
         >
           <button
-            className="absolute text-gray-500 right-2 top-2 hover:text-gray-800"
+            className="absolute right-2 top-2 text-gray-500 hover:text-gray-800"
             onClick={() => onClose()}
           >
             ✕
@@ -100,7 +100,7 @@ export default function EditProject({
                 Escopo
               </label>
               <select
-                className="block w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
                 value={projetoEditado.escopo}
                 onChange={(e) => onChangeHandler("escopo", e.target.value)}
                 required
@@ -118,14 +118,14 @@ export default function EditProject({
             </div>
 
             <button
-              className="w-full px-4 py-2 mt-4 text-white bg-blue-500 rounded-md hover:bg-blue-600"
+              className="mt-4 w-full rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
               onClick={handleSubmit}
             >
               Atualizar Projeto
             </button>
 
             <button
-              className="w-full px-4 py-2 mt-4 text-white bg-red-500 rounded-md hover:bg-red-600"
+              className="mt-4 w-full rounded-md bg-red-500 px-4 py-2 text-white hover:bg-red-600"
               onClick={() => setIsDeleteConfirmOpen(true)}
             >
               Deletar Projeto
@@ -141,20 +141,20 @@ export default function EditProject({
             className="absolute inset-0 bg-black/50"
             onClick={() => setIsDeleteConfirmOpen(false)}
           ></div>
-          <div className="relative z-10 p-4 bg-white rounded-lg shadow-lg w-96">
+          <div className="relative z-10 w-96 rounded-lg bg-white p-4 shadow-lg">
             <h3 className="mb-4 text-center text-black">
               Tem certeza que deseja deletar o projeto{" "}
               <span className="font-semibold">{projeto.titulo}</span>?
             </h3>
             <div className="flex justify-between">
               <button
-                className="px-4 py-2 text-white bg-gray-500 rounded-md hover:bg-gray-600"
+                className="rounded-md bg-gray-500 px-4 py-2 text-white hover:bg-gray-600"
                 onClick={() => setIsDeleteConfirmOpen(false)}
               >
                 Cancelar
               </button>
               <button
-                className="px-4 py-2 text-white bg-red-500 rounded-md hover:bg-red-600"
+                className="rounded-md bg-red-500 px-4 py-2 text-white hover:bg-red-600"
                 onClick={handleDelete}
               >
                 Deletar

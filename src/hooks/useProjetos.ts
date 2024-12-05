@@ -26,6 +26,8 @@ export function useProjetos({
     try {
       if (uuid) {
         const projeto = await projetoService.getProjetoByUuid(uuid);
+        console.log(projeto);
+
         setProjeto(projeto || null);
         const contribuicoes = await projetoService.findContribuicoes(uuid);
         setContribuicoes(contribuicoes || []);
@@ -38,10 +40,9 @@ export function useProjetos({
     } finally {
       setIsLoading(false);
     }
-  }, [token, uuid]);
+  }, [uuid]);
 
   useEffect(() => {
-    if (!token) return;
     fetchProjetos();
   }, [selectedCategory, token, uuid, fetchProjetos]);
 
@@ -49,7 +50,9 @@ export function useProjetos({
     setIsLoading(true);
     try {
       const projetos = await projetoService.searchProjetos(query);
+
       setProjetos(projetos || []);
+      return projetos;
     } catch (error) {
       console.error("Erro ao buscar projetos:", error);
     } finally {

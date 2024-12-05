@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Login from "./components/auth/Login.tsx";
 import HomePage from "./pages/HomePage.tsx";
 import Auth from "./components/auth/Auth.tsx";
@@ -33,27 +33,32 @@ function App() {
 
   return (
     <Routes>
+      {/* Rotas de autenticação */}
+      <Route element={<PageLayout />}>
         {!usuario ? (
           <>
             <Route index element={<HomePage />} />
             <Route path="/auth/login" element={<Auth Child={Login} />} />
             <Route path="/auth/register" element={<Auth Child={Register} />} />
-            <Route path="/" element={<PageLayout />}/>
             <Route path="/about" element={<About />} />
+            <Route path="*" element={<Navigate to="/" />} />
           </>
-          ) : (
+        ) : (
           <>
             <Route index element={<Dashboard />} />
             <Route path="/profile/:uuid" element={<Profile />} />
-            <Route path="/auth/login" element={<Auth Child={Login} />} />
             <Route path="/update-profile" element={<UpdateProfile />} />
+            <Route
+              path="/contribuicoes/:uuid"
+              element={<ContribuicaoDetalhes />}
+            />
             <Route path="/projetos/:uuid" element={<ProjetoDetalhes />} />
-            <Route path="/contribuicoes/:uuid" element={<ContribuicaoDetalhes />} />
+            <Route path="/projetos/search" element={<SearchProjetos />} />
+            <Route path="/usuarios/search" element={<SearchUsuarios />} />
+            <Route path="*" element={<Navigate to="/" />} />
           </>
         )}
-      <Route path="/profile/:uuid" element={<Profile />} />
-      <Route path="/projetos/search" element={<SearchProjetos />} />
-      <Route path="/usuarios/search" element={<SearchUsuarios />} />
+      </Route>
     </Routes>
   );
 }

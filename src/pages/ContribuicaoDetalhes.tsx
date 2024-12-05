@@ -40,14 +40,14 @@ export default function ContribuicaoDetalhes() {
     <div className="flex min-h-screen flex-col bg-[#121212] text-white">
       <div className="flex flex-col items-center p-6">
         <div className="w-full max-w-4xl rounded-md bg-[#1f1f1f] p-8 shadow-lg">
-          <div className="flex items-center justify-between mb-6">
-            <h1 className="text-4xl font-bold text-blue-400 capitalize">
+          <div className="mb-6 flex items-center justify-between">
+            <h1 className="text-4xl font-bold capitalize text-blue-400">
               {contribuicao.titulo}
             </h1>
             {contribuicao.idUsuarios.includes(usuario!.uuid) && (
               <button
                 onClick={() => setIsEditModalOpen(true)}
-                className="px-4 py-2 text-white transition-all bg-green-600 rounded-md hover:bg-green-700"
+                className="rounded-md bg-green-600 px-4 py-2 text-white transition-all hover:bg-green-700"
               >
                 Editar Contribuição
               </button>

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useProjetos } from "../../hooks/useProjetos";
 
 export default function SearchBar() {
-  const { buscarProjetos } = useProjetos({ });
+  const { buscarProjetos } = useProjetos({});
   const [searchType, setSearchType] = useState<"projeto" | "usuario">(
     "projeto",
   );
@@ -16,6 +16,8 @@ export default function SearchBar() {
       if (searchType === "projeto") {
         const projetos = await buscarProjetos(searchQuery);
         setSearchQuery("");
+        console.log(projetos);
+
         navigate("/projetos/search", { state: { projetos } });
       } else {
         navigate("/usuarios/search", { state: searchQuery });

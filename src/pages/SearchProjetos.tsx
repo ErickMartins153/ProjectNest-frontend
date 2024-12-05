@@ -4,6 +4,7 @@ import ProjetoList from "../components/projeto/ProjetoList";
 
 export default function SearchProjetos() {
   const location = useLocation();
+
   const projetos = (location.state?.projetos || []) as Projeto[];
 
   return (
